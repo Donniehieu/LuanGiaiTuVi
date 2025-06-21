@@ -108,3 +108,39 @@ function anVongLocTon12Sao(locTonIdx, amduong, CUNG_CELLS) {
         }
     }
 }
+function anVanTinhDuongPhuQuocAn(locTonIdx, CUNG_CELLS) {
+    // Xóa nhãn cũ
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        cell.querySelectorAll('.sao-van-tinh, .sao-duong-phu, .sao-quoc-an').forEach(e => e.remove());
+    });
+
+    // Lưu Niên Văn Tinh (sao tốt, hành kim)
+    let vanTinhIdx = (locTonIdx + 3) % 12;
+    let cellVanTinh = document.querySelector('.cell' + CUNG_CELLS[vanTinhIdx].cell);
+    if (cellVanTinh) {
+        cellVanTinh.insertAdjacentHTML('beforeend',
+            `<div class="sao-van-tinh sao-tot hanh-kim phu-tinh" >
+                                                                                Văn Tinh
+                                                                            </div>`);
+    }
+
+    // Đường Phù (sao tốt, hành mộc)
+    let duongPhuIdx = (locTonIdx + 5) % 12;
+    let cellDuongPhu = document.querySelector('.cell' + CUNG_CELLS[duongPhuIdx].cell);
+    if (cellDuongPhu) {
+        cellDuongPhu.insertAdjacentHTML('beforeend',
+            `<div class="sao-duong-phu sao-tot hanh-moc phu-tinh" >
+                                                                                Đường Phù
+                                                                            </div>`);
+    }
+
+    // Quốc Ấn (sao tốt, hành thổ)
+    let quocAnIdx = (locTonIdx + 8) % 12;
+    let cellQuocAn = document.querySelector('.cell' + CUNG_CELLS[quocAnIdx].cell);
+    if (cellQuocAn) {
+        cellQuocAn.insertAdjacentHTML('beforeend',
+            `<div class="sao-quoc-an sao-tot hanh-tho phu-tinh">
+                                                                                Quốc Ấn
+                                                                            </div>`);
+    }
+}
