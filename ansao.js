@@ -29,3 +29,44 @@ function arrangeGoodBadStarsInCells() {
         });
     });
 }
+function groupAndArrangeStars() {
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        // Xử lý chính tinh
+        let chinhList = Array.from(cell.querySelectorAll('.chinh-tinh'));
+        if (chinhList.length) {
+            let group = cell.querySelector('.chinh-tinh-group');
+            if (!group) {
+                group = document.createElement('div');
+                group.className = 'chinh-tinh-group';
+                cell.insertBefore(group, cell.firstChild);
+            } else {
+                group.innerHTML = '';
+            }
+            chinhList.forEach(e => {
+                e.style.display = 'block';
+                e.style.width = '100%';
+                e.style.textAlign = 'center';
+                group.appendChild(e);
+            });
+        }
+
+        // Xử lý phụ tinh
+        let phuList = Array.from(cell.querySelectorAll('.phu-tinh'));
+        if (phuList.length) {
+            let group = cell.querySelector('.phu-tinh-group');
+            if (!group) {
+                group = document.createElement('div');
+                group.className = 'phu-tinh-group';
+                cell.appendChild(group);
+            } else {
+                group.innerHTML = '';
+            }
+            // Tách tốt/xấu nếu cần, hoặc chỉ mỗi sao 1 dòng
+            phuList.forEach(e => {
+                e.style.display = 'block';
+                e.style.width = '100%';
+                group.appendChild(e);
+            });
+        }
+    });
+}
