@@ -124,7 +124,7 @@
             "Tài Bạch", "Tử Tức", "Phu Thê", "Huynh Đệ"
         ];
         // ------ Định nghĩa mệnh 60 hoa giáp ------
-       
+
         // Mapping chuẩn 12 cung ngoài Bắc phái (theo cell HTML và chi)
         const CUNG_CELLS = [
             { cell: 13, chi: "Dần" },
@@ -258,20 +258,7 @@
         }
 
         // Hàm điền tên cung vào bàn lá số theo vị trí
-        const HANH_CHI = {
-            "Tý": "hanh-thuy",
-            "Sửu": "hanh-tho",
-            "Dần": "hanh-moc",
-            "Mão": "hanh-moc",
-            "Thìn": "hanh-tho",
-            "Tỵ": "hanh-hoa",
-            "Ngọ": "hanh-hoa",
-            "Mùi": "hanh-tho",
-            "Thân": "hanh-kim",
-            "Dậu": "hanh-kim",
-            "Tuất": "hanh-tho",
-            "Hợi": "hanh-thuy"
-        };
+
         function hienThiTenCungLaso(menhIdx, idCungThan = null, highlightTuViIdx = null) {
 
             for (let i = 0; i < 12; ++i) {
@@ -288,13 +275,13 @@
                 let hanhClass = HANH_CHI[chi] || '';
                 if (cell) {
                     cell.innerHTML = `
-                                                        <div class="ten-cung">
-                                                            ${tenCung}
-                                                        </div>
-                                                        <div class="chi-cung ${hanhClass}">
-                                                            ${can} ${chi}
-                                                        </div>
-                                                    `;
+                                                            <div class="ten-cung">
+                                                                ${tenCung}
+                                                            </div>
+                                                            <div class="chi-cung ${hanhClass}">
+                                                                ${can} ${chi}
+                                                            </div>
+                                                        `;
                 }
             }
         }
@@ -367,40 +354,7 @@
             validateDateInput();
         });
 
-        const START_CAN_THANG_TU_DAN = {
-            "G.": 2, "K.": 2,   // Bính Dần
-            "Ấ.": 4, "C.": 4,   // Mậu Dần
-            "B.": 6, "T.": 6,  // Canh Dần
-            "Đ.": 8, "N.": 8, // Nhâm Dần
-            "M.": 0, "Q.": 0    // Giáp Dần
-        };
-        // Hàm lấy 12 thiên can cho 12 cung bắt đầu từ Dần (cung 13) theo can năm sinh âm lịch
-        function getCanThang12Cung(canNam) {
-            const startCan = START_CAN_THANG_TU_DAN[canNam];
-            let canArr = [];
-            for (let i = 0; i < 12; ++i) {
-                canArr.push(CAN[(startCan + i) % 10]);
-            }
 
-            return canArr;
-        }
-
-        // Khi hiển thị lên bàn lá số và bảng, dùng như sau:
-        function render12CungCanChi(menhChi, canNam) {
-            // CUNG_CELLS: [{cell, chi}] bắt đầu từ Dần thuận kim đồng hồ
-            let menhIdx = CUNG_CELLS.findIndex(c => c.chi === menhChi);
-            let can12 = getCanThang12Cung(canNam);
-            let html = "<table class='table table-sm table-bordered mt-2'><thead><tr><th>#</th><th>Cung</th><th>Can Chi</th></tr></thead><tbody>";
-            for (let i = 0; i < 12; ++i) {
-                let cc = CUNG_CELLS[(menhIdx + i) % 12];
-                let tenCung = TEN_CUNG_FULL[i];
-                let can = can12[i];
-                html += `<tr${i === 0 ? ' style="font-weight:bold;background:#ffe"' : ''}><td>${i + 1}</td><td>${tenCung}</td><td>${can} ${cc.chi}</td></tr>`;
-            }
-            html += "</tbody></table>";
-
-            return html;
-        }
 
         function tinhdaivan(menhIdx, cucSo, amduong) {
             // Số đại vận cho 12 cung, khởi tạo
@@ -565,24 +519,24 @@
             if (cellLocTon) {
                 cellLocTon.insertAdjacentHTML('beforeend',
                     `<div class="sao-loc-ton sao-tot hanh-tho phu-tinh" >
-                                                        Lộc Tồn
-                                                    </div>`);
+                                                            Lộc Tồn
+                                                        </div>`);
             }
             // Hiển thị Kình Dương (sao xấu, hành kim)
             const cellKinhDuong = document.querySelector('.cell' + CUNG_CELLS[kinhDuongIdx].cell);
             if (cellKinhDuong) {
                 cellKinhDuong.insertAdjacentHTML('beforeend',
                     `<div class="sao-kinh-duong sao-xau hanh-kim phu-tinh" >
-                                                        Kình Dương
-                                                    </div>`);
+                                                            Kình Dương
+                                                        </div>`);
             }
             // Hiển thị Đà La (sao xấu, hành kim)
             const cellDaLa = document.querySelector('.cell' + CUNG_CELLS[daLaIdx].cell);
             if (cellDaLa) {
                 cellDaLa.insertAdjacentHTML('beforeend',
                     `<div class="sao-da-la sao-xau hanh-kim phu-tinh">
-                                                        Đà La
-                                                    </div>`);
+                                                            Đà La
+                                                        </div>`);
             }
         }
 
@@ -636,8 +590,8 @@
                     let hanhClass = HANH_MAU[sao.hanh] || "";
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="sao-vong-locton ${loaiClass} ${hanhClass} phu-tinh">
-                                                            ${sao.ten}
-                                                        </div>`);
+                                                                ${sao.ten}
+                                                            </div>`);
                 }
             }
         }
@@ -655,8 +609,8 @@
             if (cellVanTinh) {
                 cellVanTinh.insertAdjacentHTML('beforeend',
                     `<div class="sao-van-tinh sao-tot hanh-kim phu-tinh" >
-                                                        Văn Tinh
-                                                    </div>`);
+                                                            Văn Tinh
+                                                        </div>`);
             }
 
             // Đường Phù (sao tốt, hành mộc)
@@ -665,8 +619,8 @@
             if (cellDuongPhu) {
                 cellDuongPhu.insertAdjacentHTML('beforeend',
                     `<div class="sao-duong-phu sao-tot hanh-moc phu-tinh" >
-                                                        Đường Phù
-                                                    </div>`);
+                                                            Đường Phù
+                                                        </div>`);
             }
 
             // Quốc Ấn (sao tốt, hành thổ)
@@ -675,8 +629,8 @@
             if (cellQuocAn) {
                 cellQuocAn.insertAdjacentHTML('beforeend',
                     `<div class="sao-quoc-an sao-tot hanh-tho phu-tinh">
-                                                        Quốc Ấn
-                                                    </div>`);
+                                                            Quốc Ấn
+                                                        </div>`);
             }
         }
         function anSaoThienKhoiVietLuuHa(canNam) {
@@ -730,8 +684,8 @@
                         let hanhClass = HANH_MAU[sao.hanh] || "";
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="${sao.className} ${loaiClass} ${hanhClass} phu-tinh">
-                                                                ${sao.ten}
-                                                            </div>`);
+                                                                    ${sao.ten}
+                                                                </div>`);
                     }
                 }
             }
@@ -792,8 +746,8 @@
 
                 cell.insertAdjacentHTML('beforeend',
                     `<div class="${sao.className} ${loaiClass} ${hanhClass} phu-tinh">
-                                                        ${sao.ten}
-                                                    </div>`);
+                                                            ${sao.ten}
+                                                        </div>`);
                 // Sao đi kèm
                 if (KEM_VONG_THAI_TUE[sao.ten]) {
                     const kem = KEM_VONG_THAI_TUE[sao.ten];
@@ -801,8 +755,8 @@
                     let kemHanhClass = HANH_MAU[kem.hanh] || "";
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="sao-${kem.ten.toLowerCase().replace(/\s/g, "-")} ${kemLoaiClass} ${kemHanhClass} phu-tinh" >
-                                                            ${kem.ten}
-                                                        </div>`);
+                                                                ${kem.ten}
+                                                            </div>`);
                 }
             }
             // Gợi ý: nếu muốn an thêm "Thiên Khốc" (xấu, hành kim) ở vị trí đặc biệt, xử lý ở đây.
@@ -827,8 +781,8 @@
             if (cell) {
                 cell.insertAdjacentHTML('beforeend',
                     `<div class="sao-thien-khoc hanh-thuy sao-xau">
-                                                        Thiên Khốc
-                                                    </div>`);
+                                                            Thiên Khốc
+                                                        </div>`);
             }
         }
 
@@ -876,8 +830,8 @@
                         let hanhClass = HANH_MAU[sao.hanh] || "";
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="${sao.className} ${loaiClass} ${hanhClass} phu-tinh " >
-                                                                ${sao.ten}
-                                                            </div>`);
+                                                                    ${sao.ten}
+                                                                </div>`);
                     }
                 }
             });
@@ -912,8 +866,8 @@
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="${sao.className} sao-tot ${sao.hanh} phu-tinh">
-                                                            ${sao.ten}
-                                                        </div>`);
+                                                                ${sao.ten}
+                                                            </div>`);
                 }
             });
         }
@@ -949,14 +903,14 @@
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="${sao.className} sao-xau ${sao.hanh} phu-tinh">
-                                                                ${sao.ten}
-                                                            </div>`);
+                                                                    ${sao.ten}
+                                                                </div>`);
                     }
                 }
             });
         }
 
-                                                /**
+                                                    /**
 * An sao Phá Toái theo quy tắc Tam Hợp tuổi
 * @param {string} chiNam - Chi năm sinh ("Tý", "Sửu", ..., "Hợi")
 */function anPhaToai(chiNam) {
@@ -980,8 +934,8 @@
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="sao-pha-toai sao-xau hanh-hoa phu-tinh">
-                                                            Phá Toái
-                                                        </div>`);
+                                                                Phá Toái
+                                                            </div>`);
                 }
             }
         }
@@ -1016,16 +970,16 @@
             if (cellThienTai) {
                 cellThienTai.insertAdjacentHTML('beforeend',
                     `<div class="sao-thien-tai sao-tot hanh-tho phu-tinh" >
-                                                        Thiên Tài
-                                                    </div>`);
+                                                            Thiên Tài
+                                                        </div>`);
             }
             // An sao Thiên Thọ
             let cellThienTho = document.querySelector('.cell' + CUNG_CELLS[idxThienTho].cell);
             if (cellThienTho) {
                 cellThienTho.insertAdjacentHTML('beforeend',
                     `<div class="sao-thien-tho sao-tot hanh-tho phu-tinh">
-                                                        Thiên Thọ
-                                                    </div>`);
+                                                            Thiên Thọ
+                                                        </div>`);
             }
         }
         /**
@@ -1062,8 +1016,8 @@
             if (cell) {
                 cell.insertAdjacentHTML('beforeend',
                     `<div class="sao-dau-quan sao-xau hanh-hoa phu-tinh">
-                                                        Đẩu Quân
-                                                    </div>`);
+                                                            Đẩu Quân
+                                                        </div>`);
             }
         }
         /**
@@ -1114,17 +1068,17 @@
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="sao-trang-sinh" style="
-                                                                position:absolute;
-                                                                left:0; right:0;
-                                                                bottom:${2}px;
-                                                                text-align:center;
-                                                                color:#000;
-                                                                font-size:0.97em;
-                                                                font-weight:bold;
-                                                                z-index:3;
-                                                            ">
-                                                                ${SAO_TRANG_SINH[i]}
-                                                            </div>`);
+                                                                    position:absolute;
+                                                                    left:0; right:0;
+                                                                    bottom:${2}px;
+                                                                    text-align:center;
+                                                                    color:#000;
+                                                                    font-size:0.97em;
+                                                                    font-weight:bold;
+                                                                    z-index:3;
+                                                                ">
+                                                                    ${SAO_TRANG_SINH[i]}
+                                                                </div>`);
                 }
             }
         }
@@ -1217,8 +1171,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="tu-hoa ${rule.hanh} ${rule.loai}">
-                                                                     ${rule.hoa}
-                                                                </div>`);
+                                                                         ${rule.hoa}
+                                                                    </div>`);
                     }
                 }
             });
@@ -1257,18 +1211,18 @@
             // Helper: trả về cell DOM đúng để đặt ở góc
             function insertTriet(cell, styleExtend = '', rotate = '', text = 'TRIỆT') {
                 cell.insertAdjacentHTML('beforeend', `
-                                                    <div class="triet-border" style="
-                                                        position:absolute;
-                                                        ${styleExtend}
-                                                        width:40px; height:20px;
-                                                        background:#fffbe7; border:2px solid #d32f2f; border-radius:5px;
-                                                        color:#d32f2f; font-weight:bold; font-size:0.75em; z-index:100;
-                                                        display:flex; align-items:center; justify-content:center;
-                                                        text-align:center; letter-spacing:1px;
-                                                        box-shadow:1px 1px 5px #0001; opacity:0.96;
-                                                        ${rotate}
-                                                    ">${text}</div>
-                                                `);
+                                                        <div class="triet-border" style="
+                                                            position:absolute;
+                                                            ${styleExtend}
+                                                            width:40px; height:20px;
+                                                            background:#fffbe7; border:2px solid #d32f2f; border-radius:5px;
+                                                            color:#d32f2f; font-weight:bold; font-size:0.75em; z-index:100;
+                                                            display:flex; align-items:center; justify-content:center;
+                                                            text-align:center; letter-spacing:1px;
+                                                            box-shadow:1px 1px 5px #0001; opacity:0.96;
+                                                            ${rotate}
+                                                        ">${text}</div>
+                                                    `);
             }
 
             // Xử lý từng trường hợp đặc biệt (cặp chi)
@@ -1387,18 +1341,18 @@
             // Helper: insert label TUẦN vào cell đúng vị trí
             function insertTuan(cell, styleExtend = '', rotate = '', text = 'TUẦN') {
                 cell.insertAdjacentHTML('beforeend', `
-                                                        <div class="tuan-border" style="
-                                                            position:absolute;
-                                                            ${styleExtend}
-                                                            width:40px; height:20px;
-                                                            background:#fffbe7; border:2px solid #2949d3; border-radius:5px;
-                                                            color:#2949d3; font-weight:bold; font-size:0.75em; z-index:100;
-                                                            display:flex; align-items:center; justify-content:center;
-                                                            text-align:center; letter-spacing:1px;
-                                                            box-shadow:1px 1px 5px #0001; opacity:0.96;
-                                                            ${rotate}
-                                                        ">${text}</div>
-                                                    `);
+                                                            <div class="tuan-border" style="
+                                                                position:absolute;
+                                                                ${styleExtend}
+                                                                width:40px; height:20px;
+                                                                background:#fffbe7; border:2px solid #2949d3; border-radius:5px;
+                                                                color:#2949d3; font-weight:bold; font-size:0.75em; z-index:100;
+                                                                display:flex; align-items:center; justify-content:center;
+                                                                text-align:center; letter-spacing:1px;
+                                                                box-shadow:1px 1px 5px #0001; opacity:0.96;
+                                                                ${rotate}
+                                                            ">${text}</div>
+                                                        `);
             }
 
             // Chỉ vẽ 1 label (ở cell có chỉ số nhỏ hơn, hoặc ưu tiên cell1)
@@ -1432,9 +1386,9 @@
             // Xóa nhãn lưu cũ
             document.querySelectorAll('.laso-cell').forEach(cell => {
                 cell.querySelectorAll(`
-                                                            .sao-luu-thai-tue, .sao-luu-bach-ho, .sao-luu-tang-mon,
-                                                            .sao-luu-thien-hu, .sao-luu-thien-khoc, .sao-luu-thien-ma
-                                                        `).forEach(e => e.remove());
+                                                                .sao-luu-thai-tue, .sao-luu-bach-ho, .sao-luu-tang-mon,
+                                                                .sao-luu-thien-hu, .sao-luu-thien-khoc, .sao-luu-thien-ma
+                                                            `).forEach(e => e.remove());
             });
 
             // Helper: lấy vị trí chi trong vòng 12 chi
@@ -1453,10 +1407,10 @@
                 const cell = document.querySelector('.cell' + CUNG_CELLS[idxLuuThaiTue].cell);
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend', `
-                                                                <div class="sao-luu-thai-tue sao-xau hanh-hoa">
-                                                                    L. Thái Tuế
-                                                                </div>
-                                                            `);
+                                                                    <div class="sao-luu-thai-tue sao-xau hanh-hoa">
+                                                                        L. Thái Tuế
+                                                                    </div>
+                                                                `);
                 }
             }
 
@@ -1468,10 +1422,10 @@
                 const cell = document.querySelector('.cell' + CUNG_CELLS[idxBachHo].cell);
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend', `
-                                                                <div class="sao-luu-bach-ho sao-xau hanh-kim" >
-                                                                    L. Bạch Hổ
-                                                                </div>
-                                                            `);
+                                                                    <div class="sao-luu-bach-ho sao-xau hanh-kim" >
+                                                                        L. Bạch Hổ
+                                                                    </div>
+                                                                `);
                 }
             }
 
@@ -1483,10 +1437,10 @@
                 const cell = document.querySelector('.cell' + CUNG_CELLS[idxTangMon].cell);
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend', `
-                                                                <div class="sao-luu-tang-mon sao-xau hanh-moc" >
-                                                                    L. Tang Môn
-                                                                </div>
-                                                            `);
+                                                                    <div class="sao-luu-tang-mon sao-xau hanh-moc" >
+                                                                        L. Tang Môn
+                                                                    </div>
+                                                                `);
                 }
             }
 
@@ -1498,10 +1452,10 @@
                 const cell = document.querySelector('.cell' + CUNG_CELLS[idxThienHu].cell);
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend', `
-                                                                <div class="sao-luu-thien-hu sao-xau hanh-thuy">
-                                                                    L. Thiên Hư
-                                                                </div>
-                                                            `);
+                                                                    <div class="sao-luu-thien-hu sao-xau hanh-thuy">
+                                                                        L. Thiên Hư
+                                                                    </div>
+                                                                `);
                 }
             }
 
@@ -1512,10 +1466,10 @@
                 const cell = document.querySelector('.cell' + CUNG_CELLS[idxThienKhoc].cell);
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend', `
-                                                                <div class="sao-luu-thien-khoc sao-xau hanh-kim">
-                                                                    L. Thiên Khốc
-                                                                </div>
-                                                            `);
+                                                                    <div class="sao-luu-thien-khoc sao-xau hanh-kim">
+                                                                        L. Thiên Khốc
+                                                                    </div>
+                                                                `);
                 }
             }
 
@@ -1535,10 +1489,10 @@
                     const cell = document.querySelector('.cell' + CUNG_CELLS[idx].cell);
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend', `
-                                                                    <div class="sao-luu-thien-ma sao-tot hanh-hoa">
-                                                                        L. Thiên Mã
-                                                                    </div>
-                                                                `);
+                                                                        <div class="sao-luu-thien-ma sao-tot hanh-hoa">
+                                                                            L. Thiên Mã
+                                                                        </div>
+                                                                    `);
                     }
                 }
             }
@@ -1570,8 +1524,8 @@
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="sao-luu-loc-ton sao-tot hanh-tho">
-                                                                L. Lộc Tồn
-                                                            </div>`);
+                                                                    L. Lộc Tồn
+                                                                </div>`);
                 }
             }
         }
@@ -1605,8 +1559,8 @@
             if (cellLocTon) {
                 cellLocTon.insertAdjacentHTML('beforeend',
                     `<div class="sao-luu-loc-ton sao-tot hanh-tho phu-tinh">
-                                                        L. Lộc Tồn
-                                                    </div>`);
+                                                            L. Lộc Tồn
+                                                        </div>`);
             }
 
             // Lưu Kình Dương: cung ngay sau Lộc Tồn (thuận chiều kim đồng hồ) - sao xấu, hành kim
@@ -1615,8 +1569,8 @@
             if (cellKinhDuong) {
                 cellKinhDuong.insertAdjacentHTML('beforeend',
                     `<div class="sao-luu-kinh-duong sao-xau hanh-kim phu-tinh">
-                                                        L. Kình Dương
-                                                    </div>`);
+                                                            L. Kình Dương
+                                                        </div>`);
             }
 
             // Lưu Đà La: cung ngay trước Lộc Tồn (ngược chiều kim đồng hồ) - sao xấu, hành kim
@@ -1625,8 +1579,8 @@
             if (cellDaLa) {
                 cellDaLa.insertAdjacentHTML('beforeend',
                     `<div class="sao-luu-da-la sao-xau hanh-kim phu-tinh">
-                                                        L. Đà La
-                                                    </div>`);
+                                                            L. Đà La
+                                                        </div>`);
             }
         }
 
@@ -1714,8 +1668,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="tu-hoa ${rule.hanh} ${rule.loai}">
-                                                                    L. ${rule.hoa}
-                                                                </div>`);
+                                                                        L. ${rule.hoa}
+                                                                    </div>`);
                     }
                 }
             });
@@ -1745,8 +1699,8 @@
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="nguyet-han-label nguyet-han">
-                                                                TH${i + 1}
-                                                            </div>`);
+                                                                    TH${i + 1}
+                                                                </div>`);
                 }
             }
         }
@@ -1860,8 +1814,8 @@
                         );
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="phu-tinh-label chinh-tinh">
-                                                            ${saoHTMLArr.join(', ')}
-                                                        </div>`);
+                                                                ${saoHTMLArr.join(', ')}
+                                                            </div>`);
                     }
                 }
             }
@@ -1880,8 +1834,8 @@
                 if (cell) {
                     cell.insertAdjacentHTML('afterbegin',
                         `<div class="daivan-label dai-van">
-                                                            ${lsDaiVan[i]}
-                                                        </div>`);
+                                                                ${lsDaiVan[i]}
+                                                            </div>`);
                 }
             }
 
@@ -1896,8 +1850,8 @@
                 if (cell) {
                     cell.insertAdjacentHTML('beforeend',
                         `<div class="tieuvan-label tieu-han">
-                                                            ${arrTieuvan[i]}
-                                                        </div>`);
+                                                                ${arrTieuvan[i]}
+                                                            </div>`);
                 }
             }
             anNguyetHan(IDTieuHan, am.thang, canchi.gio.split(' ')[1]);
@@ -1952,8 +1906,8 @@
                             let hanhClass = HANH_MAU_CODINH[sao.hanh] || "";
                             cell.insertAdjacentHTML('beforeend',
                                 `<div class="sao-codinh-label sao-xau ${hanhClass}  ">
-                                                                ${sao.ten}
-                                                            </div>`);
+                                                                    ${sao.ten}
+                                                                </div>`);
                         }
                     }
                 });
@@ -2009,8 +1963,8 @@
                         let hanhClass = HANH_MAU[sao.hanh] || "";
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="phutinhthem-label ${loaiClass} ${hanhClass} phu-tinh">
-                                                            ${sao.ten}
-                                                        </div>`);
+                                                                ${sao.ten}
+                                                            </div>`);
                     }
                 });
                 // trả về vị trí tả phụ, hữu bật
@@ -2079,8 +2033,8 @@
                         let hanhClass = HANH_MAU[sao.hanh] || "";
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="${sao.className} ${loaiClass} ${hanhClass} phu-tinh">
-                                                            ${sao.ten}
-                                                        </div>`);
+                                                                ${sao.ten}
+                                                            </div>`);
                     }
                 });
                 return { vanXuongIdx: idx_vanXuong, vanKhucIdx: idx_vanKhuc };
@@ -2146,8 +2100,8 @@
                         let baseTop = 130, offset = 18, top = baseTop + count * offset;
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="sao-hoa-tinh sao-xau hanh-hoa phu-tinh">
-                                                            Hỏa Tinh
-                                                        </div>`);
+                                                                Hỏa Tinh
+                                                            </div>`);
                     }
                 }
 
@@ -2165,8 +2119,8 @@
                         let baseTop = 130, offset = 18, top = baseTop + count * offset;
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="sao-linh-tinh sao-xau hanh-hoa phu-tinh">
-                                                            Linh Tinh
-                                                        </div>`);
+                                                                Linh Tinh
+                                                            </div>`);
                     }
                 }
             }
@@ -2187,8 +2141,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="sao-tam-thai sao-tot hanh-thuy phu-tinh">
-                                                            Tam Thai
-                                                        </div>`);
+                                                                Tam Thai
+                                                            </div>`);
                     }
                 }
 
@@ -2200,8 +2154,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="sao-bat-toa sao-tot hanh-moc phu-tinh">
-                                                            Bát Tọa
-                                                        </div>`);
+                                                                Bát Tọa
+                                                            </div>`);
                     }
                 }
 
@@ -2213,8 +2167,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="sao-thien-quy sao-tot hanh-tho phu-tinh">
-                                                            Thiên Quý
-                                                        </div>`);
+                                                                Thiên Quý
+                                                            </div>`);
                     }
                 }
 
@@ -2226,8 +2180,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('beforeend',
                             `<div class="sao-an-quang sao-tot hanh-moc phu-tinh">
-                                                            Ân Quang
-                                                        </div>`);
+                                                                Ân Quang
+                                                            </div>`);
                     }
                 }
             }
@@ -2401,8 +2355,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-loc-ton sao-tot hanh-tho phu-tinh" style="text-align:left;">
-                               Lộc Tồn (ĐV)
-                           </div>`);
+                                   Lộc Tồn (ĐV)
+                               </div>`);
                     }
                 }
                 // Kình Dương đại vận
@@ -2413,8 +2367,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-kinh-duong sao-xau hanh-kim phu-tinh" style="text-align:left;">
-                               Kình Dương (ĐV)
-                           </div>`);
+                                   Kình Dương (ĐV)
+                               </div>`);
                     }
                 }
                 // Đà La đại vận
@@ -2425,8 +2379,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-da-la sao-xau hanh-kim phu-tinh" style="text-align:left;">
-                               Đà La (ĐV)
-                           </div>`);
+                                   Đà La (ĐV)
+                               </div>`);
                     }
                 }
             }
@@ -2497,8 +2451,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-thien-khoi sao-tot hanh-hoa phu-tinh" style="text-align:left;">
-                                        Thiên Khôi (ĐV)
-                                    </div>`);
+                                            Thiên Khôi (ĐV)
+                                        </div>`);
                     }
                 }
 
@@ -2509,8 +2463,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-thien-viet sao-tot hanh-hoa phu-tinh" style="text-align:left;">
-                                        Thiên Việt (ĐV)
-                                    </div>`);
+                                            Thiên Việt (ĐV)
+                                        </div>`);
                     }
                 }
             }
@@ -2579,8 +2533,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-thien-ma sao-tot hanh-hoa phu-tinh" style="text-align:left;">
-                                        Thiên Mã (ĐV)
-                                    </div>`);
+                                            Thiên Mã (ĐV)
+                                        </div>`);
                     }
                 }
             }
@@ -2698,9 +2652,9 @@
                             if (cell) {
                                 cell.insertAdjacentHTML('beforeend',
                                     `<div class="saodv-tu-hoa ${isTot ? "sao-tot" : "sao-xau"} ${hanhClass} phu-tinh"
-                                        style="font-weight:bold;font-size:13px;text-align:left;white-space:pre-line;">
-                                            (${label} - ĐV)
-                                        </div>`);
+                                            style="font-weight:bold;font-size:13px;text-align:left;white-space:pre-line;">
+                                                (${label} - ĐV)
+                                            </div>`);
                             }
                         }
                     }
@@ -2714,7 +2668,7 @@
             const hanhCuc = layNguHanhCuc(cuc);
             const kqSinhKhac = xetSinhKhacNguHanh(hanhMenh, hanhCuc);
             const Quan_he_cucmenh = hienHuongCo(kqSinhKhac);
-           
+
             namtuoi = soCuoiNamSinh(am.nam);
             const am_duong_tinh_chat = amDuongThuanNghichLy(namtuoi, chiMenh);
 
@@ -2732,29 +2686,29 @@
 
 
             document.getElementById('cungGop').innerHTML = `
-                                                                    <div><b>Người xem hạn:</b> ${hoten} </div>
-                                                                    <div><b>Giới tính :</b> ${gioitinh} </div>
-                                                                    <div><b>Năm xem hạn:</b> ${namxemhan} (${canchiNamXemHan})</div>
-                                                                    <div><b>Sinh âm lịch:</b> ${am.ngay}/${am.thang}${am.nhuan ? ' (Nhuận)' : ''}/${am.nam}</div>
-                                                                    <div><b>Năm sinh: ${canchi.nam} Tháng sinh: ${canchi.thang} </b> </div>
-                                                                    <div><b> Ngày sinh: ${canchi.ngay} Giờ sinh: ${canchi.gio}</b> </div>
-                                                                    <div><b> Số tuổi âm:</b> ${tuoiAm} Tuổi</div>
-                                                                    <hr/>
-                                                                    <div><b>Âm dương:</b> ${amduong}</div>
-                                                                    <div><b>Mệnh:</b> ${menh}</div>
-                                                                    <div><b>Cục:</b> ${cuc}</div>
-                                                                    <div><b> ${Quan_he_cucmenh}</b></div>
-                                                                    <div><b> Thân cư ${cungCu}</b></div>
-                                                                    <div><b>${am_duong_tinh_chat}</b></div>
-                                                                    <hr/>
-                                                                    <div><b>${phamgio_quan_sat}</b></div>
-                                                                    <div><b>${phamgio_diem_vuong}</b></div>
-                                                                    <div><b>${phamgio_da_de}</b></div>
-                                                                    <div><b>${phamgio_tuong_quan}</b></div>
-                                                                    <div><b>${phamgio_kim_xa_thiet_toa}</b></div>
+                                                                        <div><b>Người xem hạn:</b> ${hoten} </div>
+                                                                        <div><b>Giới tính :</b> ${gioitinh} </div>
+                                                                        <div><b>Năm xem hạn:</b> ${namxemhan} (${canchiNamXemHan})</div>
+                                                                        <div><b>Sinh âm lịch:</b> ${am.ngay}/${am.thang}${am.nhuan ? ' (Nhuận)' : ''}/${am.nam}</div>
+                                                                        <div><b>Năm sinh: ${canchi.nam} Tháng sinh: ${canchi.thang} </b> </div>
+                                                                        <div><b> Ngày sinh: ${canchi.ngay} Giờ sinh: ${canchi.gio}</b> </div>
+                                                                        <div><b> Số tuổi âm:</b> ${tuoiAm} Tuổi</div>
+                                                                        <hr/>
+                                                                        <div><b>Âm dương:</b> ${amduong}</div>
+                                                                        <div><b>Mệnh:</b> ${menh}</div>
+                                                                        <div><b>Cục:</b> ${cuc}</div>
+                                                                        <div><b> ${Quan_he_cucmenh}</b></div>
+                                                                        <div><b> Thân cư ${cungCu}</b></div>
+                                                                        <div><b>${am_duong_tinh_chat}</b></div>
+                                                                        <hr/>
+                                                                        <div><b>${phamgio_quan_sat}</b></div>
+                                                                        <div><b>${phamgio_diem_vuong}</b></div>
+                                                                        <div><b>${phamgio_da_de}</b></div>
+                                                                        <div><b>${phamgio_tuong_quan}</b></div>
+                                                                        <div><b>${phamgio_kim_xa_thiet_toa}</b></div>
 
 
-                                                                `;
+                                                                    `;
             document.getElementById('form-row').classList.add('d-none');
             document.getElementById('laso-row').classList.remove('d-none');
             setTimeout(function () {
@@ -2785,6 +2739,7 @@
     <script src="veduongtamhop.js"></script>
     <script src="chuplaso.js"></script>
     <script src="nguhanhcucmenh.js"></script>
+    <script src="ancanchocung.js"></script>
 </body>
      
 </html>

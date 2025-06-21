@@ -137,3 +137,17 @@ function tinhcucSo(tenCuc) {
 
 
 }
+const HANH_CHI = {
+    "Tý": "hanh-thuy",
+    "Sửu": "hanh-tho",
+    "Dần": "hanh-moc",
+    "Mão": "hanh-moc",
+    "Thìn": "hanh-tho",
+    "Tỵ": "hanh-hoa",
+    "Ngọ": "hanh-hoa",
+    "Mùi": "hanh-tho",
+    "Thân": "hanh-kim",
+    "Dậu": "hanh-kim",
+    "Tuất": "hanh-tho",
+    "Hợi": "hanh-thuy"
+};
