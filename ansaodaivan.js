@@ -137,3 +137,181 @@ function viTriKhoiVietDaiVan(canDaiVan, cungCells) {
         tenCungViet: entry.viet
     };
 }
+function hienThiKhoiVietDaiVan(viTriKV, cungCells) {
+    // Xoá nhãn cũ nếu có
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        cell.querySelectorAll('.saodv-thien-khoi, .saodv-thien-viet').forEach(e => e.remove());
+    });
+
+    // Thiên Khôi đại vận
+    if (viTriKV.khoi !== null && viTriKV.khoi !== -1) {
+        let cellNum = cungCells[viTriKV.khoi].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('afterbegin',
+                `<div class="saodv-thien-khoi sao-tot hanh-hoa phu-tinh" style="text-align:left;">
+                                                                        Thiên Khôi (ĐV)
+                                                                    </div>`);
+        }
+    }
+
+    // Thiên Việt đại vận
+    if (viTriKV.viet !== null && viTriKV.viet !== -1) {
+        let cellNum = cungCells[viTriKV.viet].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('afterbegin',
+                `<div class="saodv-thien-viet sao-tot hanh-hoa phu-tinh" style="text-align:left;">
+                                                                        Thiên Việt (ĐV)
+                                                                    </div>`);
+        }
+    }
+}
+
+// ==== Xác định vị trí sao Thiên Mã Đại Vận - ĐÚNG quy tắc truyền thống ====
+
+// Tam hợp
+const TAM_HOP_CHI = [
+    ["Dần", "Ngọ", "Tuất"],    // Hỏa
+    ["Thân", "Tý", "Thìn"],    // Thủy
+    ["Tỵ", "Dậu", "Sửu"],      // Kim
+    ["Hợi", "Mão", "Mùi"],     // Mộc
+];
+
+// Đối xung 12 địa chi
+const DOI_XUNG_CHI = {
+    "Tý": "Ngọ", "Sửu": "Mùi", "Dần": "Thân", "Mão": "Dậu",
+    "Thìn": "Tuất", "Tỵ": "Hợi", "Ngọ": "Tý", "Mùi": "Sửu",
+    "Thân": "Dần", "Dậu": "Mão", "Tuất": "Thìn", "Hợi": "Tỵ"
+};
+
+/**
+ * Xác định cung Thiên Mã đại vận (chuẩn truyền thống)
+ * @param {string} chiDaiVan - Địa chi cung đại vận hiện tại ("Dần", "Thân", ...)
+ * @param {object[]} cungCells - Mảng CUNG_CELLS: [{chi: "Dần", ...}, ...]
+ * @returns {object} - {thienMa: idx, tenCungThienMa: string}
+ */
+function viTriThienMaDaiVan(chiDaiVan, cungCells) {
+    // Tìm nhóm tam hợp chứa chi hiện tại
+    let foundGroup = null;
+    for (const group of TAM_HOP_CHI) {
+        if (group.includes(chiDaiVan)) {
+            foundGroup = group;
+            break;
+        }
+    }
+    if (!foundGroup) return { thienMa: null, tenCungThienMa: null };
+
+    // Chi đầu tiên của tam hợp
+    const chiDau = foundGroup[0];
+    // Lấy chi đối xung với chi đầu
+    const chiThienMa = DOI_XUNG_CHI[chiDau];
+
+    // Tìm index trong mảng CUNG_CELLS
+    const idxThienMa = cungCells.findIndex(c => c.chi === chiThienMa);
+
+    return {
+        thienMa: idxThienMa,
+        tenCungThienMa: chiThienMa
+    };
+}
+function hienThiThienMaDaiVan(viTriTM, cungCells) {
+    // Xoá nhãn cũ nếu có
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        cell.querySelectorAll('.saodv-thien-ma').forEach(e => e.remove());
+    });
+
+    // Thiên Mã đại vận
+    if (viTriTM.thienMa !== null && viTriTM.thienMa !== -1) {
+        let cellNum = cungCells[viTriTM.thienMa].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('afterbegin',
+                `<div class="saodv-thien-ma sao-tot hanh-hoa phu-tinh" style="text-align:left;">
+                                                                        Thiên Mã (ĐV)
+                                                                    </div>`);
+        }
+    }
+}
+// Bảng tứ hóa đại vận theo bài thơ (Bắc phái)
+const TU_HOA_DAI_VAN = {
+    "G.": ["Liêm Trinh", "Phá Quân", "Vũ Khúc", "Thái Dương"],        // Giáp
+    "Ấ.": ["Thiên Cơ", "Thiên Lương", "Tử Vi", "Thái Âm"],           // Ất
+    "B.": ["Thiên Đồng", "Thiên Cơ", "Văn Xương", "Liêm Trinh"],      // Bính
+    "Đ.": ["Thái Âm", "Thiên Đồng", "Thiên Cơ", "Cự Môn"],            // Đinh
+    "M.": ["Tham Lang", "Thái Âm", "Hữu Bật", "Thiên Cơ"],            // Mậu
+    "K.": ["Vũ Khúc", "Tham Lang", "Thiên Lương", "Văn Khúc"],        // Kỷ
+    "C.": ["Thái Dương", "Vũ Khúc", "Thái Âm", "Thiên Đồng"],         // Canh
+    "T.": ["Cự Môn", "Thái Dương", "Văn Khúc", "Văn Xương"],          // Tân
+    "N.": ["Thiên Lương", "Tử Vi", "Tả Phụ", "Vũ Khúc"],              // Nhâm
+    "Q.": ["Phá Quân", "Cự Môn", "Thái Âm", "Tham Lang"],             // Quý
+};
+
+const TU_HOA_LABELS = ["Hóa Lộc", "Hóa Quyền", "Hóa Khoa", "Hóa Kỵ"];
+
+// Ngũ hành của các sao chủ hóa theo truyền thống (bạn có thể chỉnh lại cho phù hợp quy chuẩn của dự án)
+
+
+const HANH_CLASS = {
+    "kim": "hanh-kim",
+    "moc": "hanh-moc",
+    "thuy": "hanh-thuy",
+    "hoa": "hanh-hoa",
+    "tho": "hanh-tho",
+};
+
+/**
+ * An tứ hóa đại vận lên bàn lá số, gán class tốt/xấu và ngũ hành đúng từng sao hóa
+ * @param {string} canDaiVan - Thiên can cung đại vận hiện tại ("G.","Ấ.",...)
+ * @param {object[]} cungCells - Mảng CUNG_CELLS: [{cell, chi, sao: [{name, ...}, ...]}, ...]
+ */
+// Các nhãn hóa
+
+// Ngũ hành cho hóa đại vận (chuẩn Bắc phái)
+const NGU_HANH_HOA_SAO = {
+    "Hóa Lộc": "moc",
+    "Hóa Quyền": "moc",
+    "Hóa Khoa": "moc",
+    "Hóa Kỵ": "thuy"
+};
+
+
+/**
+ * Hiển thị hóa Lộc, Quyền, Khoa, Kỵ đại vận lên lá số (theo can đại vận)
+ * @param {string} canDaiVan - Thiên can đại vận ("G.", "B.",...)
+ * @param {object[]} cungCells - Danh sách cung trên lá số, mỗi cung có .cell hoặc .cellNum, .sao (mảng sao)
+ */
+function hienThiTuHoaDaiVan(canDaiVan, cungCells) {
+    const hoaArr = TU_HOA_DAI_VAN[canDaiVan];
+    if (!hoaArr) return;
+
+    // Xoá nhãn cũ
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        cell.querySelectorAll('.saodv-tu-hoa').forEach(e => e.remove());
+    });
+
+    for (const cung of cungCells) {
+        if (!cung.sao) continue;
+        for (const sao of cung.sao) {
+            const tenSao = sao.ten || sao.name;
+            const idx = hoaArr.indexOf(tenSao);
+            if (idx !== -1) {
+                const label = TU_HOA_LABELS[idx];
+                // Xác định tốt/xấu
+                const isTot = idx < 3; // Lộc, Quyền, Khoa là tốt, Kỵ là xấu
+                // Ngũ hành hóa
+                const hanh = NGU_HANH_HOA_SAO[label] || "tho";
+                const hanhClass = HANH_CLASS[hanh];
+                // Lấy DOM cell
+                let cell = document.querySelector('.cell' + (cung.cellNum || cung.cell));
+                if (cell) {
+                    cell.insertAdjacentHTML('beforeend',
+                        `<div class="saodv-tu-hoa ${isTot ? "sao-tot" : "sao-xau"} ${hanhClass} phu-tinh"
+                                                                        style="font-weight:bold;font-size:13px;text-align:left;white-space:pre-line;">
+                                                                            (${label} - ĐV)
+                                                                        </div>`);
+                }
+            }
+        }
+    }
+}
