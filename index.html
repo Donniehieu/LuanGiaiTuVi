@@ -195,78 +195,19 @@
             // Ví dụ sử dụng sau khi xác định chiNam, tuoiAm, gioitinh
             const arrTieuvan = tinhTieuvan(chiNam, chiNamXemhan, gioitinh);
             renderTieuVan(arrTieuvan);
-           
-            // khi render: với mỗi cell ứng với CUNG_CELLS[i], chèn arrTieuvan[i] ở góc trái dưới cùng
-           
+
             anNguyetHan(IDTieuHan, am.thang, canchi.gio.split(' ')[1]);
-   
+
             const thangSinhSaoIdx = anSaoTheoThangSinh(am.thang, IDCungMenh);
 
-       
+
             const gioSinhSaoIdx = anSaoTheoGioSinh(gio.split(' ')[0]);
 
-          
+
             const gio_sinh_chi = canchi.gio.split(' ')[1];
             anSaoHoaLinhTinh(chiNam, gioitinh, canNam, gio_sinh_chi);
 
-            function anSaoTheoNgaySinh(ngay_am, saoThangSinhIdx, saoGioSinhIdx) {
-                // Xóa nhãn cũ nếu có
-                document.querySelectorAll('.laso-cell').forEach(cell => {
-                    cell.querySelectorAll('.sao-tam-thai, .sao-bat-toa, .sao-thien-quy, .sao-an-quang').forEach(e => e.remove());
-                });
 
-                // Tam Thai (sao tốt, hành kim)
-                if (typeof saoThangSinhIdx.taPhu === 'number') {
-                    let idx = (saoThangSinhIdx.taPhu + (ngay_am - 1)) % 12;
-                    let cellNum = CUNG_CELLS[idx].cell;
-                    let cell = document.querySelector('.cell' + cellNum);
-                    if (cell) {
-                        cell.insertAdjacentHTML('beforeend',
-                            `<div class="sao-tam-thai sao-tot hanh-thuy phu-tinh">
-                                                                                        Tam Thai
-                                                                                    </div>`);
-                    }
-                }
-
-                // Bát Tọa (sao tốt, hành mộc)
-                if (typeof saoThangSinhIdx.huuBat === 'number') {
-                    let idx = (saoThangSinhIdx.huuBat - (ngay_am - 1) + 12 * 3) % 12;
-                    let cellNum = CUNG_CELLS[idx].cell;
-                    let cell = document.querySelector('.cell' + cellNum);
-                    if (cell) {
-                        cell.insertAdjacentHTML('beforeend',
-                            `<div class="sao-bat-toa sao-tot hanh-moc phu-tinh">
-                                                                                        Bát Tọa
-                                                                                    </div>`);
-                    }
-                }
-
-                // Thiên Quý (sao tốt, hành thổ)
-                if (typeof saoGioSinhIdx.vanKhuc === 'number') {
-                    let idx = (saoGioSinhIdx.vanKhuc - (ngay_am - 2) + 12 * 3) % 12;
-                    let cellNum = CUNG_CELLS[idx].cell;
-                    let cell = document.querySelector('.cell' + cellNum);
-                    if (cell) {
-                        cell.insertAdjacentHTML('beforeend',
-                            `<div class="sao-thien-quy sao-tot hanh-tho phu-tinh">
-                                                                                        Thiên Quý
-                                                                                    </div>`);
-                    }
-                }
-
-                // Ân Quang (sao tốt, hành mộc)
-                if (typeof saoGioSinhIdx.vanXuong === 'number') {
-                    let idx = (saoGioSinhIdx.vanXuong + (ngay_am - 2) + 12 * 3) % 12;
-                    let cellNum = CUNG_CELLS[idx].cell;
-                    let cell = document.querySelector('.cell' + cellNum);
-                    if (cell) {
-                        cell.insertAdjacentHTML('beforeend',
-                            `<div class="sao-an-quang sao-tot hanh-moc phu-tinh">
-                                                                                        Ân Quang
-                                                                                    </div>`);
-                    }
-                }
-            }
             anSaoTheoNgaySinh(
                 am.ngay,
                 { taPhu: thangSinhSaoIdx.taPhuIdx, huuBat: thangSinhSaoIdx.huuBatIdx },
@@ -352,20 +293,7 @@
             let daiVanArr = [];
 
             for (let i = 0; i < 12; ++i) daiVanArr.push(cucSo + i * 10);
-            function getCungDaiVanHienTai(daiVanArr, tuoiHienTai) {
-                for (let i = 0; i < 12; ++i) {
-                    let start = daiVanArr[i];
-                    let end = daiVanArr[(i + 1) % 12];
-                    if (i < 11 && tuoiHienTai >= start && tuoiHienTai < end) {
-                        return i + 1;
-                    }
-                    // Nếu là cung cuối cùng
-                    if (i === 11 && tuoiHienTai >= start) {
-                        return i + 1;
-                    }
-                }
-                return -1; // Không tìm thấy
-            }
+           
 
             let idxCungDaiVan = getCungDaiVanHienTai(daiVanArr, tuoiAm);
 
@@ -374,150 +302,13 @@
 
             let canCung = getCanThang12Cung(ThienCanNamSinh)[idxCungDaiVan];
 
-            // ====== Hàm xác định vị trí Lộc Tồn đại vận dựa theo can đại vận hiện tại (vòng Lộc Tồn, bỏ tứ mộ) ======
-            const VONG_LOC_TON_CUNG = ["Dần", "Mão", "Tỵ", "Ngọ", "Tỵ", "Ngọ", "Thân", "Dậu", "Hợi", "Tý"];
-            const VONG_LOC_TON_CAN = ["G.", "Ấ.", "B.", "Đ.", "M.", "K.", "C.", "T.", "N.", "Q."]; // Giáp, Ất, Bính, Đinh, ...
+          
 
-            /**
-             * Trả về tên cung ứng với can đại vận hiện tại theo vòng Lộc Tồn
-             * @param {string} canDaiVan - Thiên can ký hiệu ("G.","Ấ.","B.","Đ.","M.","K.","C.","T.","N.","Q.")
-             * @returns {string|null} - Tên cung Lộc Tồn đại vận ("Dần", "Mão", "Tỵ", "Ngọ", "Thân", "Dậu") hoặc null nếu không hợp lệ
-             */
-            function viTriLocTonDaiVan(canDaiVan) {
-                // Chỉ 6 can đầu tiên ứng với 6 cung vòng Lộc Tồn (Giáp~Kỷ)
-                const idx = VONG_LOC_TON_CAN.indexOf(canDaiVan);
-                if (idx === -1) return null;
-                return VONG_LOC_TON_CUNG[idx];
-            }
-
-
-            /**
-             * Tìm vị trí các sao đại vận vòng Lộc Tồn dựa trên can đại vận hiện tại
-             * @param {string} canDaiVan - Thiên can cung đại vận hiện tại ("G.","Ấ.",...)
-             * @param {object[]} cungCells - Mảng CUNG_CELLS từ code dự án, mỗi phần tử {cell, chi}
-             * @returns {object} - {locTon: idx, kinhDuong: idx, daLa: idx, tenCungLocTon: string}
-             */
-            function viTriSaoDaiVanVongLocTon(canDaiVan, cungCells) {
-                // Lấy tên cung Lộc Tồn đại vận
-                const tenCungLocTon = viTriLocTonDaiVan(canDaiVan);
-                if (!tenCungLocTon) return { locTon: null, kinhDuong: null, daLa: null, tenCungLocTon: null };
-
-                // Tìm index trong mảng CUNG_CELLS
-                const idxLocTon = cungCells.findIndex(c => c.chi === tenCungLocTon);
-
-                // Kình Dương: từ Lộc Tồn tiến 1 cung thuận vòng Bắc phái
-                const idxKinhDuong = (idxLocTon + 1) % 12;
-                // Đà La: từ Lộc Tồn lùi 1 cung nghịch vòng Bắc phái
-                const idxDaLa = (idxLocTon + 11) % 12;
-
-                return {
-                    locTon: idxLocTon,       // index trong CUNG_CELLS
-                    kinhDuong: idxKinhDuong, // index trong CUNG_CELLS
-                    daLa: idxDaLa,           // index trong CUNG_CELLS
-                    tenCungLocTon
-                };
-            }
-
-            /**
-             * Hiển thị các sao đại vận Lộc Tồn, Kình Dương, Đà La lên bàn lá số
-             * @param {object} saoDaiVan - Đối tượng trả về từ viTriSaoDaiVanVongLocTon
-             * @param {object[]} cungCells - Mảng CUNG_CELLS từ code dự án, mỗi phần tử {cell, chi}
-             */
-            function hienThiSaoDaiVanVongLocTon(saoDaiVan, cungCells) {
-                // Xoá nhãn cũ nếu có
-                document.querySelectorAll('.laso-cell').forEach(cell => {
-                    cell.querySelectorAll('.saodv-loc-ton, .saodv-kinh-duong, .saodv-da-la').forEach(e => e.remove());
-                });
-
-                // Lộc Tồn đại vận
-                if (saoDaiVan.locTon !== null) {
-                    let cellNum = cungCells[saoDaiVan.locTon].cell;
-
-                    let cell = document.querySelector('.cell' + cellNum);
-                    if (cell) {
-                        cell.insertAdjacentHTML('afterbegin',
-                            `<div class="saodv-loc-ton sao-tot hanh-tho phu-tinh" style="text-align:left;">
-                                                           Lộc Tồn (ĐV)
-                                                       </div>`);
-                    }
-                }
-                // Kình Dương đại vận
-                if (saoDaiVan.kinhDuong !== null) {
-                    let cellNum = cungCells[saoDaiVan.kinhDuong].cell;
-
-                    let cell = document.querySelector('.cell' + cellNum);
-                    if (cell) {
-                        cell.insertAdjacentHTML('afterbegin',
-                            `<div class="saodv-kinh-duong sao-xau hanh-kim phu-tinh" style="text-align:left;">
-                                                           Kình Dương (ĐV)
-                                                       </div>`);
-                    }
-                }
-                // Đà La đại vận
-                if (saoDaiVan.daLa !== null) {
-                    let cellNum = cungCells[saoDaiVan.daLa].cell;
-
-                    let cell = document.querySelector('.cell' + cellNum);
-                    if (cell) {
-                        cell.insertAdjacentHTML('afterbegin',
-                            `<div class="saodv-da-la sao-xau hanh-kim phu-tinh" style="text-align:left;">
-                                                           Đà La (ĐV)
-                                                       </div>`);
-                    }
-                }
-            }
-
-            // ====== Hàm workflow tổng hợp cho đại vận (gọi hàm này khi cần render đại vận lên lá số) ======
-            /**
-             * Gọi hàm này sau khi đã xác định idxCungDaiVan và mảng can 12 cung (thứ tự theo CUNG_CELLS)
-             * @param {number} idxCungDaiVan - index cung đại vận hiện tại (0~11, trong CUNG_CELLS)
-             * @param {string[]} can12Cung - mảng 12 thiên can cho 12 cung, thứ tự khớp CUNG_CELLS
-             * @param {object[]} cungCells - Mảng CUNG_CELLS từ code dự án
-             */
-            function renderDaiVanSaoLocTonKinhDuongDaLa(idxCungDaiVan, can12Cung, cungCells) {
-                // Lấy can đại vận hiện tại
-
-                // Lấy vị trí các sao đại vận
-                let saoDaiVan = viTriSaoDaiVanVongLocTon(canCung, cungCells);
-                // Hiển thị lên bàn lá số
-                hienThiSaoDaiVanVongLocTon(saoDaiVan, cungCells);
-            }
-
-            renderDaiVanSaoLocTonKinhDuongDaLa(idxCungDaiVan, lsDaiVan, CUNG_CELLS);
+            renderDaiVanSaoLocTonKinhDuongDaLa(idxCungDaiVan, lsDaiVan, CUNG_CELLS,canCung);
             // ==== Xác định vị trí sao Thiên Khôi và Thiên Việt Đại Vận ====
             // Bảng tra theo Bắc phái
 
-            const MAP_KHOI_VIET = {
-                "G.": { khoi: "Sửu", viet: "Mùi" },      // Giáp
-                "Ấ.": { khoi: "Tý", viet: "Thân" },      // Ất
-                "B.": { khoi: "Hợi", viet: "Dậu" },      // Bính
-                "Đ.": { khoi: "Hợi", viet: "Dậu" },      // Đinh
-                "M.": { khoi: "Sửu", viet: "Mùi" },      // Mậu
-                "K.": { khoi: "Tý", viet: "Thân" },      // Kỷ
-                "C.": { khoi: "Ngọ", viet: "Dần" },      // Canh
-                "T.": { khoi: "Ngọ", viet: "Dần" },      // Tân
-                "N.": { khoi: "Mão", viet: "Tỵ" },       // Nhâm
-                "Q.": { khoi: "Mão", viet: "Tỵ" },       // Quý
-            };
-
-            /**
-             * Xác định vị trí Thiên Khôi và Thiên Việt đại vận trên CUNG_CELLS
-             * @param {string} canDaiVan - Thiên can cung đại vận hiện tại ("G.","Ấ.",...)
-             * @param {object[]} cungCells - Mảng CUNG_CELLS: [{chi: "Dần", ...}, ...]
-             * @returns {object} - {khoi: idx, viet: idx, tenCungKhoi: string, tenCungViet: string}
-             */
-            function viTriKhoiVietDaiVan(canDaiVan, cungCells) {
-                const entry = MAP_KHOI_VIET[canDaiVan];
-                if (!entry) return { khoi: null, viet: null, tenCungKhoi: null, tenCungViet: null };
-                const idxKhoi = cungCells.findIndex(c => c.chi === entry.khoi);
-                const idxViet = cungCells.findIndex(c => c.chi === entry.viet);
-                return {
-                    khoi: idxKhoi,
-                    viet: idxViet,
-                    tenCungKhoi: entry.khoi,
-                    tenCungViet: entry.viet
-                };
-            }
+          
 
             const viTriKVDV = viTriKhoiVietDaiVan(canCung, CUNG_CELLS);
             function hienThiKhoiVietDaiVan(viTriKV, cungCells) {
@@ -533,8 +324,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-thien-khoi sao-tot hanh-hoa phu-tinh" style="text-align:left;">
-                                                                    Thiên Khôi (ĐV)
-                                                                </div>`);
+                                                                        Thiên Khôi (ĐV)
+                                                                    </div>`);
                     }
                 }
 
@@ -545,8 +336,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-thien-viet sao-tot hanh-hoa phu-tinh" style="text-align:left;">
-                                                                    Thiên Việt (ĐV)
-                                                                </div>`);
+                                                                        Thiên Việt (ĐV)
+                                                                    </div>`);
                     }
                 }
             }
@@ -615,8 +406,8 @@
                     if (cell) {
                         cell.insertAdjacentHTML('afterbegin',
                             `<div class="saodv-thien-ma sao-tot hanh-hoa phu-tinh" style="text-align:left;">
-                                                                    Thiên Mã (ĐV)
-                                                                </div>`);
+                                                                        Thiên Mã (ĐV)
+                                                                    </div>`);
                     }
                 }
             }
@@ -734,9 +525,9 @@
                             if (cell) {
                                 cell.insertAdjacentHTML('beforeend',
                                     `<div class="saodv-tu-hoa ${isTot ? "sao-tot" : "sao-xau"} ${hanhClass} phu-tinh"
-                                                                    style="font-weight:bold;font-size:13px;text-align:left;white-space:pre-line;">
-                                                                        (${label} - ĐV)
-                                                                    </div>`);
+                                                                        style="font-weight:bold;font-size:13px;text-align:left;white-space:pre-line;">
+                                                                            (${label} - ĐV)
+                                                                        </div>`);
                             }
                         }
                     }
@@ -762,29 +553,29 @@
             phamgio_kim_xa_thiet_toa = checkGioKimXaThietToa(chiNam, am.thang, am.ngay, chiGio, gioitinh);
 
             document.getElementById('cungGop').innerHTML = `
-                                                                                                <div><b>Người xem hạn:</b> ${hoten} </div>
-                                                                                                <div><b>Giới tính :</b> ${gioitinh} </div>
-                                                                                                <div><b>Năm xem hạn:</b> ${namxemhan} (${canchiNamXemHan})</div>
-                                                                                                <div><b>Sinh âm lịch:</b> ${am.ngay}/${am.thang}${am.nhuan ? ' (Nhuận)' : ''}/${am.nam}</div>
-                                                                                                <div><b>Năm sinh: ${canchi.nam} Tháng sinh: ${canchi.thang} </b> </div>
-                                                                                                <div><b> Ngày sinh: ${canchi.ngay} Giờ sinh: ${canchi.gio}</b> </div>
-                                                                                                <div><b> Số tuổi âm:</b> ${tuoiAm} Tuổi</div>
-                                                                                                <hr/>
-                                                                                                <div><b>Âm dương:</b> ${amduong}</div>
-                                                                                                <div><b>Mệnh:</b> ${menh}</div>
-                                                                                                <div><b>Cục:</b> ${cuc}</div>
-                                                                                                <div><b> ${Quan_he_cucmenh}</b></div>
-                                                                                                <div><b> Thân cư ${cungCu}</b></div>
-                                                                                                <div><b>${am_duong_tinh_chat}</b></div>
-                                                                                                <hr/>
-                                                                                                <div><b>${phamgio_quan_sat}</b></div>
-                                                                                                <div><b>${phamgio_diem_vuong}</b></div>
-                                                                                                <div><b>${phamgio_da_de}</b></div>
-                                                                                                <div><b>${phamgio_tuong_quan}</b></div>
-                                                                                                <div><b>${phamgio_kim_xa_thiet_toa}</b></div>
+                                                                                                    <div><b>Người xem hạn:</b> ${hoten} </div>
+                                                                                                    <div><b>Giới tính :</b> ${gioitinh} </div>
+                                                                                                    <div><b>Năm xem hạn:</b> ${namxemhan} (${canchiNamXemHan})</div>
+                                                                                                    <div><b>Sinh âm lịch:</b> ${am.ngay}/${am.thang}${am.nhuan ? ' (Nhuận)' : ''}/${am.nam}</div>
+                                                                                                    <div><b>Năm sinh: ${canchi.nam} Tháng sinh: ${canchi.thang} </b> </div>
+                                                                                                    <div><b> Ngày sinh: ${canchi.ngay} Giờ sinh: ${canchi.gio}</b> </div>
+                                                                                                    <div><b> Số tuổi âm:</b> ${tuoiAm} Tuổi</div>
+                                                                                                    <hr/>
+                                                                                                    <div><b>Âm dương:</b> ${amduong}</div>
+                                                                                                    <div><b>Mệnh:</b> ${menh}</div>
+                                                                                                    <div><b>Cục:</b> ${cuc}</div>
+                                                                                                    <div><b> ${Quan_he_cucmenh}</b></div>
+                                                                                                    <div><b> Thân cư ${cungCu}</b></div>
+                                                                                                    <div><b>${am_duong_tinh_chat}</b></div>
+                                                                                                    <hr/>
+                                                                                                    <div><b>${phamgio_quan_sat}</b></div>
+                                                                                                    <div><b>${phamgio_diem_vuong}</b></div>
+                                                                                                    <div><b>${phamgio_da_de}</b></div>
+                                                                                                    <div><b>${phamgio_tuong_quan}</b></div>
+                                                                                                    <div><b>${phamgio_kim_xa_thiet_toa}</b></div>
 
 
-                                                                                            `;
+                                                                                                `;
             document.getElementById('form-row').classList.add('d-none');
             document.getElementById('laso-row').classList.remove('d-none');
             setTimeout(function () {
@@ -822,6 +613,7 @@
     <script src="tinhdaitieuvan.js"></script>
     <script src="ansaophutinh.js"></script>
     <script src="ansaoluu.js"></script>
+    <script src="ansaodaivan.js"></script>
 </body>
      
 </html>

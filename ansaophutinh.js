@@ -1161,3 +1161,61 @@ function anSaoHoaLinhTinh(chiNam, gioitinh, canNam, gio_sinh_chi) {
         }
     }
 }
+function anSaoTheoNgaySinh(ngay_am, saoThangSinhIdx, saoGioSinhIdx) {
+    // Xóa nhãn cũ nếu có
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        cell.querySelectorAll('.sao-tam-thai, .sao-bat-toa, .sao-thien-quy, .sao-an-quang').forEach(e => e.remove());
+    });
+
+    // Tam Thai (sao tốt, hành kim)
+    if (typeof saoThangSinhIdx.taPhu === 'number') {
+        let idx = (saoThangSinhIdx.taPhu + (ngay_am - 1)) % 12;
+        let cellNum = CUNG_CELLS[idx].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="sao-tam-thai sao-tot hanh-thuy phu-tinh">
+                                                                                        Tam Thai
+                                                                                    </div>`);
+        }
+    }
+
+    // Bát Tọa (sao tốt, hành mộc)
+    if (typeof saoThangSinhIdx.huuBat === 'number') {
+        let idx = (saoThangSinhIdx.huuBat - (ngay_am - 1) + 12 * 3) % 12;
+        let cellNum = CUNG_CELLS[idx].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="sao-bat-toa sao-tot hanh-moc phu-tinh">
+                                                                                        Bát Tọa
+                                                                                    </div>`);
+        }
+    }
+
+    // Thiên Quý (sao tốt, hành thổ)
+    if (typeof saoGioSinhIdx.vanKhuc === 'number') {
+        let idx = (saoGioSinhIdx.vanKhuc - (ngay_am - 2) + 12 * 3) % 12;
+        let cellNum = CUNG_CELLS[idx].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="sao-thien-quy sao-tot hanh-tho phu-tinh">
+                                                                                        Thiên Quý
+                                                                                    </div>`);
+        }
+    }
+
+    // Ân Quang (sao tốt, hành mộc)
+    if (typeof saoGioSinhIdx.vanXuong === 'number') {
+        let idx = (saoGioSinhIdx.vanXuong + (ngay_am - 2) + 12 * 3) % 12;
+        let cellNum = CUNG_CELLS[idx].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="sao-an-quang sao-tot hanh-moc phu-tinh">
+                                                                                        Ân Quang
+                                                                                    </div>`);
+        }
+    }
+}

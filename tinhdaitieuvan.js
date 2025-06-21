@@ -108,3 +108,17 @@ function renderTieuVan(arrTieuvan) {
         }
     }
 }
+function getCungDaiVanHienTai(daiVanArr, tuoiHienTai) {
+    for (let i = 0; i < 12; ++i) {
+        let start = daiVanArr[i];
+        let end = daiVanArr[(i + 1) % 12];
+        if (i < 11 && tuoiHienTai >= start && tuoiHienTai < end) {
+            return i + 1;
+        }
+        // Nếu là cung cuối cùng
+        if (i === 11 && tuoiHienTai >= start) {
+            return i + 1;
+        }
+    }
+    return -1; // Không tìm thấy
+}
