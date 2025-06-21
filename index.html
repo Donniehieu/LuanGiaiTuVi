@@ -125,62 +125,7 @@
         });
 
         
-        // ====== AN 12 SAO VÒNG LỘC TỒN & VĂN TINH, ĐƯỜNG PHÙ, QUỐC ẤN ======
-
-        // Danh sách 12 sao vòng Lộc Tồn, theo thứ tự an thuận/ nghịch
-        const SAO_LOC_TON_VONG = [
-            { ten: "Bác Sĩ", loai: "tot", hanh: "thuy" },
-            { ten: "Lực Sĩ", loai: "tot", hanh: "hoa" },
-            { ten: "Thanh Long", loai: "tot", hanh: "thuy" },
-            { ten: "Tiểu Hao", loai: "xau", hanh: "hoa" },
-            { ten: "Tướng Quân", loai: "tot", hanh: "moc" },
-            { ten: "Tấu Thư", loai: "tot", hanh: "kim" },
-            { ten: "Phi Liêm", loai: "xau", hanh: "hoa" },
-            { ten: "Hỷ Thần", loai: "tot", hanh: "hoa" },
-            { ten: "Bệnh Phù", loai: "xau", hanh: "tho" },
-            { ten: "Đại Hao", loai: "xau", hanh: "hoa" },
-            { ten: "Phục Binh", loai: "xau", hanh: "hoa" },
-            { ten: "Quan Phủ", loai: "xau", hanh: "hoa" }
-        ];
-
-        // Map hành sang class màu
-
-
-        function anVongLocTon12Sao(locTonIdx, amduong) {
-            // Xóa nhãn cũ
-            document.querySelectorAll('.laso-cell').forEach(cell => {
-                cell.querySelectorAll('.sao-vong-locton').forEach(e => e.remove());
-            });
-            const HANH_MAU = {
-                "kim": "hanh-kim",
-                "moc": "hanh-moc",
-                "thuy": "hanh-thuy",
-                "hoa": "hanh-hoa",
-                "tho": "hanh-tho"
-            };
-
-            // Chiều an sao: thuận (dương nam, âm nữ), nghịch (âm nam, dương nữ)
-            const isThuan = (amduong === "Dương Nam" || amduong === "Âm Nữ");
-
-            for (let i = 0; i < 12; ++i) {
-                // Vị trí sao: locTonIdx + i (thuận), locTonIdx - i (nghịch)
-                let idx = isThuan
-                    ? (locTonIdx + i) % 12
-                    : (locTonIdx - i + 12 * 2) % 12;
-                let cellNum = CUNG_CELLS[idx].cell;
-                let cell = document.querySelector('.cell' + cellNum);
-                if (cell) {
-                    const sao = SAO_LOC_TON_VONG[i];
-                    let loaiClass = sao.loai === "xau" ? "sao-xau" : "sao-tot";
-                    let hanhClass = HANH_MAU[sao.hanh] || "";
-                    cell.insertAdjacentHTML('beforeend',
-                        `<div class="sao-vong-locton ${loaiClass} ${hanhClass} phu-tinh">
-                                                                                    ${sao.ten}
-                                                                                </div>`);
-                }
-            }
-        }
-
+      
 
         function anVanTinhDuongPhuQuocAn(locTonIdx) {
             // Xóa nhãn cũ
@@ -1731,7 +1676,7 @@
             // Xác định vị trí Lộc Tồn
             const locTonIdx = viTriLocTon(canNam);
             // An vòng Lộc Tồn 12 sao
-            anVongLocTon12Sao(locTonIdx, amduong);
+            anVongLocTon12Sao(locTonIdx, amduong, CUNG_CELLS);
             // An Văn Tinh, Đường Phù, Quốc Ấn
             anVanTinhDuongPhuQuocAn(locTonIdx);
             // An Khôi Việt Lưu Hà
