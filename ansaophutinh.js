@@ -898,3 +898,266 @@ function anTuan(canNam, chiNam) {
         }
     }
 }
+// === AN SAO CỐ ĐỊNH: Thiên La – Địa Võng, Thiên Thương – Thiên Sứ ===
+const SAO_CODINH = [
+    { ten: "Thiên La", chi: "Thìn", loai: "xau", hanh: "kim" },
+    { ten: "Địa Võng", chi: "Tuất", loai: "xau", hanh: "kim" },
+    { ten: "Thiên Thương", cung: "Nô Bộc", loai: "xau", hanh: "tho" },
+    { ten: "Thiên Sứ", cung: "Tật Ách", loai: "xau", hanh: "thuy" }
+];
+
+// Map tên cung sang index (bắt đầu từ cung Mệnh, thuận chiều kim đồng hồ)
+const TEN_CUNG_MAP = {
+    "Mệnh": 0, "Phụ Mẫu": 1, "Phúc Đức": 2, "Điền Trạch": 3,
+    "Quan Lộc": 4, "Nô Bộc": 5, "Thiên Di": 6, "Tật Ách": 7,
+    "Tài Bạch": 8, "Tử Tức": 9, "Phu Thê": 10, "Huynh Đệ": 11
+};
+
+// Thêm class màu hành cho từng hành
+// VD: hanh-kim, hanh-tho, hanh-thuy ở style hoặc thêm JS:
+const HANH_MAU_CODINH = {
+    "kim": "hanh-kim",
+    "tho": "hanh-tho",
+    "thuy": "hanh-thuy",
+    "hoa": "hanh-hoa",
+    "moc": "hanh-moc"
+};
+
+// Hiển thị sao cố định lên bàn lá số
+function hienThiSaoCoDinh(menhIdx) {
+    // Xóa nhãn cũ
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        let old = cell.querySelector('.sao-codinh-label');
+        if (old) old.remove();
+    });
+    // B1: An Thiên La, Địa Võng theo chi
+    SAO_CODINH.forEach(sao => {
+        let cellNum = null;
+        if (sao.chi) {
+            // Tìm cell theo chi
+            let found = CUNG_CELLS.find(c => c.chi === sao.chi);
+            if (found) cellNum = found.cell;
+        } else if (sao.cung) {
+            // Tìm cell theo tên cung (tính từ cung Mệnh)
+            let cungIdx = (menhIdx + TEN_CUNG_MAP[sao.cung]) % 12;
+            cellNum = CUNG_CELLS[cungIdx].cell;
+        }
+        if (cellNum) {
+            let cell = document.querySelector('.cell' + cellNum);
+            if (cell) {
+                let hanhClass = HANH_MAU_CODINH[sao.hanh] || "";
+                cell.insertAdjacentHTML('beforeend',
+                    `<div class="sao-codinh-label sao-xau ${hanhClass}  ">
+                                                                                            ${sao.ten}
+                                                                                        </div>`);
+            }
+        }
+    });
+}
+// Quy tắc mapping: {ten: ..., startChi: ..., direction: 1/-1, loai: 'tot'|'xau', hanh: 'hoa'|'thuy'|'tho'...}
+const SAO_THANGSINH = [
+    { ten: 'Thiên Hình', startChi: 'Dậu', direction: 1, loai: 'xau', hanh: 'hoa' },      // Xấu, Hỏa
+    { ten: 'Thiên Y', startChi: 'Sửu', direction: 1, loai: 'tot', hanh: 'thuy' },        // Tốt, Thủy
+    { ten: 'Thiên Riêu', startChi: 'Sửu', direction: 1, loai: 'xau', hanh: 'thuy' },     // Xấu, Thủy
+    { ten: 'Thiên Giải', startChi: 'Thân', direction: 1, loai: 'tot', hanh: 'hoa' },     // Tốt, Hỏa
+    { ten: 'Địa Giải', startChi: 'Mùi', direction: 1, loai: 'tot', hanh: 'tho' },        // Tốt, Thổ
+    { ten: 'Tả Phụ', startChi: 'Thìn', direction: 1, loai: 'tot', hanh: 'tho' },         // Tốt, Thổ
+    { ten: 'Hữu Bật', startChi: 'Tuất', direction: -1, loai: 'tot', hanh: 'thuy' },      // Tốt, Thủy
+];
+
+// Map hành sang class màu
+const HANH_MAU = {
+    "kim": "hanh-kim",
+    "moc": "hanh-moc",
+    "thuy": "hanh-thuy",
+    "hoa": "hanh-hoa",
+    "tho": "hanh-tho"
+};
+
+let idx_taPhu = null, idx_huuBat = null;
+function anSaoTheoThangSinh(thang_am, menhIdx) {
+    // Xóa nhãn cũ nếu có
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        let olds = cell.querySelectorAll('.phutinhthem-label');
+        olds.forEach(o => o.remove());
+    });
+
+    SAO_THANGSINH.forEach(sao => {
+        // Tìm vị trí xuất phát (startIdx) trong CUNG_CELLS
+        let startIdx = CUNG_CELLS.findIndex(c => c.chi === sao.startChi);
+        if (startIdx === -1) return;
+        // Tính vị trí cung sẽ an sao (thang_am: 1~12)
+        let idx;
+        if (sao.direction === 1) {
+            idx = (startIdx + (thang_am - 1)) % 12;
+        } else {
+            idx = (startIdx - (thang_am - 1) + 12 * 3) % 12;
+        }
+        let cellNum = CUNG_CELLS[idx].cell;
+        // Ghi nhận vị trí Tả Phụ/Hữu Bật
+        if (sao.ten === "Tả Phụ") idx_taPhu = idx;
+        if (sao.ten === "Hữu Bật") idx_huuBat = idx;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            // Phân biệt tốt/xấu & gán class hành
+            let loaiClass = sao.loai === "xau" ? "sao-xau" : "sao-tot";
+            let hanhClass = HANH_MAU[sao.hanh] || "";
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="phutinhthem-label ${loaiClass} ${hanhClass} phu-tinh">
+                                                                                        ${sao.ten}
+                                                                                    </div>`);
+        }
+    });
+    // trả về vị trí tả phụ, hữu bật
+    return { taPhuIdx: idx_taPhu, huuBatIdx: idx_huuBat };
+}
+const SAO_GIO_SINH = [
+    { ten: "Văn Xương", startChi: "Tuất", direction: -1, className: "sao-gio-vanxuong", loai: "tot", hanh: "kim" },
+    { ten: "Văn Khúc", startChi: "Thìn", direction: 1, className: "sao-gio-vankhuc", loai: "tot", hanh: "thuy" },
+    { ten: "Thai Phụ", startChi: "Ngọ", direction: 1, className: "sao-gio-thaiphu", loai: "tot", hanh: "kim" },
+    { ten: "Phong Cáo", startChi: "Dần", direction: 1, className: "sao-gio-phongcao", loai: "tot", hanh: "tho" },
+    { ten: "Địa Kiếp", startChi: "Hợi", direction: 1, className: "sao-gio-diakiep", loai: "xau", hanh: "hoa" },
+    { ten: "Địa Không", startChi: "Hợi", direction: -1, className: "sao-gio-diakhong", loai: "xau", hanh: "hoa" }
+];
+
+
+
+/**
+ * An các sao phụ tinh theo giờ sinh lên từng cung
+ * @param {string} gio_sinh_chi - giờ sinh ("Tý",..., "Hợi")
+ */
+let idx_vanXuong = null, idx_vanKhuc = null;
+function anSaoTheoGioSinh(gio_sinh_chi) {
+
+    // Map hành sang class màu
+    const HANH_MAU = {
+        "kim": "hanh-kim",
+        "moc": "hanh-moc",
+        "thuy": "hanh-thuy",
+        "hoa": "hanh-hoa",
+        "tho": "hanh-tho"
+    };
+    // Thứ tự 12 chi giờ
+    const GIO12 = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    // Xóa nhãn cũ
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        cell.querySelectorAll('.sao-gio-vanxuong, .sao-gio-vankhuc, .sao-gio-thaiphu, .sao-gio-phongcao, .sao-gio-diakiep, .sao-gio-diakhong')
+            .forEach(e => e.remove());
+    });
+    SAO_GIO_SINH.forEach(sao => {
+        let startIdx = CUNG_CELLS.findIndex(c => c.chi === sao.startChi);
+        if (startIdx === -1) return;
+        let gioIdx = GIO12.indexOf(gio_sinh_chi);
+        if (gioIdx === -1) return;
+        // direction: 1 (thuận), -1 (ngược), giờ Tý là startIdx
+        let idx;
+        if (sao.direction === 1) {
+            idx = (startIdx + gioIdx) % 12;
+        } else {
+            idx = (startIdx - gioIdx + 12 * 3) % 12;
+        }
+        if (sao.ten === "Văn Xương") idx_vanXuong = idx;
+        if (sao.ten === "Văn Khúc") idx_vanKhuc = idx;
+        let cellNum = CUNG_CELLS[idx].cell;
+
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            // Đếm số nhãn đã có để lùi vị trí cho không bị trùng
+            let count = cell.querySelectorAll('.' + sao.className).length;
+            let baseTop = 110; // px, chỉnh phù hợp với các nhãn khác nếu muốn
+            let offset = 18;  // px
+            let top = baseTop + count * offset;
+            // Phân biệt tốt/xấu & gán class hành
+            let loaiClass = sao.loai === "xau" ? "sao-xau" : "sao-tot";
+            let hanhClass = HANH_MAU[sao.hanh] || "";
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="${sao.className} ${loaiClass} ${hanhClass} phu-tinh">
+                                                                                        ${sao.ten}
+                                                                                    </div>`);
+        }
+    });
+    return { vanXuongIdx: idx_vanXuong, vanKhucIdx: idx_vanKhuc };
+}
+function anSaoHoaLinhTinh(chiNam, gioitinh, canNam, gio_sinh_chi) {
+    // Xác định âm dương của năm sinh
+    const DUONG_CAN = ["G.", "B.", "M.", "C.", "N."]; // Giáp, Bính, Mậu, Canh, Nhâm (ký hiệu cắt ngắn)
+    let isDuongNam = (DUONG_CAN.includes(canNam) && gioitinh === "Nam");
+    let isAmNu = (!DUONG_CAN.includes(canNam) && gioitinh === "Nữ");
+    let isAmNam = (!DUONG_CAN.includes(canNam) && gioitinh === "Nam");
+    let isDuongNu = (DUONG_CAN.includes(canNam) && gioitinh === "Nữ");
+
+    // Danh sách chi nhóm
+    const nhom_DanNgoTuat = ["Dần", "Ngọ", "Tuất"];
+    const nhom_ThanTyThin = ["Thân", "Tý", "Thìn"];
+    const nhom_TiDauSuu = ["Tỵ", "Dậu", "Sửu"];
+    const nhom_HoiMaoMui = ["Hợi", "Mão", "Mùi"];
+
+    // 12 chi giờ
+    const GIO12 = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+
+    // === 1. Sao Hỏa Tinh ===
+    // - Dương Nam/Âm Nữ thuận, Âm Nam/Dương Nữ nghịch
+    let hoaTinh_cungkhoi = null, hoaTinh_dir = 1;
+    if (nhom_DanNgoTuat.includes(chiNam)) { hoaTinh_cungkhoi = "Sửu"; }
+    else if (nhom_ThanTyThin.includes(chiNam)) { hoaTinh_cungkhoi = "Dần"; }
+    else if (nhom_TiDauSuu.includes(chiNam)) { hoaTinh_cungkhoi = "Mão"; }
+    else if (nhom_HoiMaoMui.includes(chiNam)) { hoaTinh_cungkhoi = "Dậu"; }
+    // Xác định chiều
+    if (isDuongNam || isAmNu) hoaTinh_dir = 1; // thuận
+    else hoaTinh_dir = -1; // nghịch
+
+    // === 2. Sao Linh Tinh ===
+    // - Dương Nam/Âm Nữ nghịch, Âm Nam/Dương Nữ thuận
+    let linhTinh_cungkhoi = null, linhTinh_dir = 1;
+    if (nhom_DanNgoTuat.includes(chiNam)) { linhTinh_cungkhoi = "Mão"; }
+    else if (nhom_ThanTyThin.includes(chiNam)) { linhTinh_cungkhoi = "Tuất"; }
+    else if (nhom_TiDauSuu.includes(chiNam)) { linhTinh_cungkhoi = "Tuất"; }
+    else if (nhom_HoiMaoMui.includes(chiNam)) { linhTinh_cungkhoi = "Tuất"; }
+    // Xác định chiều
+    if (isDuongNam || isAmNu) linhTinh_dir = -1; // nghịch
+    else linhTinh_dir = 1; // thuận
+
+    // === An sao và hiện thị lên bàn lá số ===
+    // Xóa nhãn cũ
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        cell.querySelectorAll('.sao-hoa-tinh, .sao-linh-tinh').forEach(e => e.remove());
+    });
+
+    // Hỏa Tinh (sao xấu, hành hỏa)
+    if (hoaTinh_cungkhoi) {
+        let startIdx = CUNG_CELLS.findIndex(c => c.chi === hoaTinh_cungkhoi);
+        let gioIdx = GIO12.indexOf(gio_sinh_chi);
+        let idx;
+        if (hoaTinh_dir === 1) idx = (startIdx + gioIdx) % 12;
+        else idx = (startIdx - gioIdx + 12 * 3) % 12;
+        let cellNum = CUNG_CELLS[idx].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            let count = cell.querySelectorAll('.sao-hoa-tinh').length;
+            let baseTop = 130, offset = 18, top = baseTop + count * offset;
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="sao-hoa-tinh sao-xau hanh-hoa phu-tinh">
+                                                                                        Hỏa Tinh
+                                                                                    </div>`);
+        }
+    }
+
+    // Linh Tinh (sao xấu, hành hỏa)
+    if (linhTinh_cungkhoi) {
+        let startIdx = CUNG_CELLS.findIndex(c => c.chi === linhTinh_cungkhoi);
+        let gioIdx = GIO12.indexOf(gio_sinh_chi);
+        let idx;
+        if (linhTinh_dir === 1) idx = (startIdx + gioIdx) % 12;
+        else idx = (startIdx - gioIdx + 12 * 3) % 12;
+        let cellNum = CUNG_CELLS[idx].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            let count = cell.querySelectorAll('.sao-linh-tinh').length;
+            let baseTop = 130, offset = 18, top = baseTop + count * offset;
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="sao-linh-tinh sao-xau hanh-hoa phu-tinh">
+                                                                                        Linh Tinh
+                                                                                    </div>`);
+        }
+    }
+}

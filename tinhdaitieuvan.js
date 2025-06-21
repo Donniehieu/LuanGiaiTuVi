@@ -49,3 +49,62 @@ function tinhTieuvan(chiNamSinh, chiNam, gioitinh) {
     }
     return tieuvanArr;
 }
+function anNguyetHan(idxTieuHan, thangSinh, gioSinhChi) {
+    // Xóa nhãn cũ
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        let olds = cell.querySelectorAll('.nguyet-han-label');
+        olds.forEach(o => o.remove());
+    });
+
+    // Bước 1: Từ cung tiểu hạn, coi làm tháng 1, đi NGƯỢC chiều kim đồng hồ tới tháng sinh -> idxThang
+    let idxThang = (idxTieuHan - (thangSinh - 1) + 12) % 12;
+
+    // Bước 2: Từ vị trí trên (coi là giờ Tý), đi THUẬN chiều kim đồng hồ tới giờ sinh
+    const GIO12 = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    let gioIdx = GIO12.indexOf(gioSinhChi);
+    if (gioIdx === -1) gioIdx = 0; // fallback
+    let idxTH1 = (idxThang + gioIdx) % 12;
+
+    // Đặt TH1 tại idxTH1, các tháng tiếp theo thuận chiều kim đồng hồ
+    for (let i = 0; i < 12; ++i) {
+        let idx = (idxTH1 + i) % 12;
+        let cellNum = CUNG_CELLS[idx].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="nguyet-han-label nguyet-han">
+                                                                                            TH${i + 1}
+                                                                                        </div>`);
+        }
+    }
+}
+function renderDaivan(lsDaiVan) {
+    // Xóa thông tin đại vận cũ nếu có
+    document.querySelectorAll('.laso-cell').forEach(cell => {
+        let old = cell.querySelector('.daivan-label');
+        if (old) old.remove();
+    });
+    // Hiển thị đại vận trên 12 cung
+    for (let i = 0; i < 12; ++i) {
+        let cellNum = CUNG_CELLS[i].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('afterbegin',
+                `<div class="daivan-label dai-van">
+                                                                                        ${lsDaiVan[i]}
+                                                                                    </div>`);
+        }
+    }
+}
+function renderTieuVan(arrTieuvan) {
+    for (let i = 0; i < 12; ++i) {
+        let cellNum = CUNG_CELLS[i].cell;
+        let cell = document.querySelector('.cell' + cellNum);
+        if (cell) {
+            cell.insertAdjacentHTML('beforeend',
+                `<div class="tieuvan-label tieu-han">
+                                                                                        ${arrTieuvan[i]}
+                                                                                    </div>`);
+        }
+    }
+}
