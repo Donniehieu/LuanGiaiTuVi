@@ -33,6 +33,16 @@ function getMenhCell(thang_am, gio_chi) {
 
     return obj; // {cell: xx, chi: "..."}
 }
+// Hàm xác định cell cung thân (theo Bắc phái)
+function getThanCell(thang_am, gio_chi) {
+    let thangIdx = (thang_am - 1) % 12;
+    let gioIdx = CHI12.indexOf(gio_chi);
+    let thanIdx = (thangIdx + gioIdx) % 12;
+    IDCungThan = thanIdx;
+    let obj = CUNG_CELLS[thanIdx];
+    return obj;
+}
+
 function hienThiTenCungLaso(menhIdx, idCungThan = null, highlightTuViIdx = null) {
 
     for (let i = 0; i < 12; ++i) {
