@@ -119,6 +119,9 @@ function getCungDaiVanHienTai(daiVanArr, tuoiHienTai) {
         if (i === 11 && tuoiHienTai >= start) {
             return i + 1;
         }
+        if (i == 0 && tuoiHienTai <= start) {
+            return i;
+        }
     }
     return -1; // Không tìm thấy
 }

@@ -176,9 +176,17 @@ document.getElementById('form_tuvi').addEventListener('submit', function (e) {
     anSaoLuuTuHoa(canchiNamXemHan.split(' ')[0], cuCungSao);
     // An đại vận sao
     let daiVanArr = [];
-    for (let i = 0; i < 12; ++i) daiVanArr.push(cucSo + i * 10);
+    for (let i = 0; i < 12; ++i) { daiVanArr.push(cucSo + i * 10); }
     let idxCungDaiVan = getCungDaiVanHienTai(daiVanArr, tuoiAm);
-    let tenCungDaiVan = CUNG_CELLS[idxCungDaiVan].chi;
+    console.log("Cung Đại Vận hiện tại:", idxCungDaiVan, "tuổi âm:", tuoiAm, "cucSo:", cucSo, "đại vận ", daiVanArr);
+    console.log(IDCungMenh);
+    let tenCungDaiVan = "";
+    if (idxCungDaiVan == 0) {
+        tenCungDaiVan = CUNG_CELLS[IDCungMenh].chi;
+    } else if (idxCungDaiVan > 0 && idxCungDaiVan<=12){
+        tenCungDaiVan = CUNG_CELLS[idxCungDaiVan].chi;
+    }
+    console.log("Tên cung đại vận hiện tại:", tenCungDaiVan);
 
 
     let canCung = getCanThang12Cung(ThienCanNamSinh)[idxCungDaiVan];
@@ -219,8 +227,10 @@ document.getElementById('form_tuvi').addEventListener('submit', function (e) {
                                                                                                         <div><b>Giới tính :</b> ${gioitinh} </div>
                                                                                                         <div><b>Năm xem hạn:</b> ${namxemhan} (${canchiNamXemHan})</div>
                                                                                                         <div><b>Sinh âm lịch:</b> ${am.ngay}/${am.thang}${am.nhuan ? ' (Nhuận)' : ''}/${am.nam}</div>
-                                                                                                        <div><b>Năm sinh: ${canchi.nam} Tháng sinh: ${canchi.thang} </b> </div>
-                                                                                                        <div><b> Ngày sinh: ${canchi.ngay} Giờ sinh: ${canchi.gio}</b> </div>
+                                                                                                        <div><b>Năm sinh: ${canchi.nam} </b> </div>
+                                                                                                        <div><b>Tháng sinh: ${canchi.thang} </b> </div>
+                                                                                                        <div><b> Ngày sinh: ${canchi.ngay}</b> </div>
+                                                                                                        <div><b> Giờ sinh: ${canchi.gio}</b> </div>
                                                                                                         <div><b> Số tuổi âm:</b> ${tuoiAm} Tuổi</div>
                                                                                                         <hr/>
                                                                                                         <div><b>Âm dương:</b> ${amduong}</div>
