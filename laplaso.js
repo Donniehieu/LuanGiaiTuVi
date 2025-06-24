@@ -1,4 +1,5 @@
-﻿let cucSo = 0;
+﻿import { getAllStarsInCells } from './luangiai.js';
+let cucSo = 0;
 let IDTieuHan = 0;
 let cungCu = "";
 // hàm thực hiện khi nhập dữ liệu các trường

@@ -1,5 +1,7 @@
-﻿
-function getAllStarsInCells() {
+﻿import { luangiaichung } from './luanchung.js';
+import { luancungmenh } from './luancungmenh.js';
+import { loikhuyen } from './advices.js';
+export function getAllStarsInCells() {
     // Các class selector chứa sao (mỗi selector nên lấy đúng các sao bạn đã an)
     const saoSelectors = [
 
@@ -34,3 +36,15 @@ function getAllStarsInCells() {
     }
     return result;
 }
+
+const general = luangiaichung();
+const cung = [
+    luancungmenh(),
+   
+];
+const advice = loikhuyen();
+
+// Gọi hàm hiển thị (đảm bảo setLasoData đã có trong window)
+window.setLasoData({
+    general, cung, advice
+});

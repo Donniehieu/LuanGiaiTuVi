@@ -193,57 +193,27 @@
         </div>
     </div>
     <script>
-        // Hàm này nhận dữ liệu từ JS khác để hiển thị lên giao diện
-        function setLasoData({  general, cung, advice }) {
-            const anhBanLaSo = localStorage.getItem('anhBanLaSo');
-            if (anhBanLaSo) {
-                document.getElementById('svg-holder').innerHTML =
-                    `<img src="${anhBanLaSo}" alt="Ảnh bàn lá số" style="max-width:600px;width:100%;border-radius:12px;border:1.5px solid #bce3dd;">`;
-            } else {
-                document.getElementById('svg-holder').innerHTML =
-                    "<em>Không tìm thấy ảnh bàn lá số!</em>";
-            }
-            // Luận giải tổng quan
+        // Hàm nhận context do main.js truyền vào
+        window.setLasoData = function ({ general, cung, advice }) {
             document.getElementById('general-content').innerText = general || 'Chưa có dữ liệu';
-            // Luận giải từng cung
             if (Array.isArray(cung) && cung.length > 0) {
                 document.getElementById('cung-content').innerHTML =
-                    cung.map((item, idx) =>
+                    cung.map(item =>
                         `<div class="cung-item">
-                   <b>${item.tenCung}:</b> <br>
-                   <span>${item.luandai || ''}</span>
-                 </div>`
+                        <b>${item.tenCung}:</b> <br>
+                        <span>${item.luandai || ''}</span>
+                    </div>`
                     ).join('');
             } else {
                 document.getElementById('cung-content').innerHTML = '<em>Chưa có dữ liệu</em>';
             }
-            // Lời khuyên
             document.getElementById('advice-content').innerText = advice || 'Chưa có dữ liệu';
         }
 
-        // DEMO dữ liệu mẫu với đầy đủ 13 cung
-        setLasoData({
-           
-            general: "Lá số cho thấy bạn là người hòa nhã, có chí tiến thủ, dễ thành công nếu biết tận dụng các cơ hội trong cuộc sống.",
-            cung: [
-                { tenCung: 'Mệnh', luandai: 'Đây là cung chủ đạo, thể hiện tính cách mạnh mẽ, nghị lực cao.' },
-                { tenCung: 'Thân', luandai: 'Có khả năng thích nghi tốt, linh hoạt trong nhiều hoàn cảnh.' },
-                { tenCung: 'Phụ Mẫu', luandai: 'Nhận được sự yêu thương, hỗ trợ từ cha mẹ.' },
-                { tenCung: 'Phúc Đức', luandai: 'Gia đình có truyền thống tốt, hậu thuẫn mạnh mẽ.' },
-                { tenCung: 'Điền Trạch', luandai: 'Có thể sở hữu nhà cửa, đất đai vững chắc.' },
-                { tenCung: 'Quan Lộc', luandai: 'Đường công danh thuận lợi, dễ thăng tiến.' },
-                { tenCung: 'Nô Bộc', luandai: 'Có bạn bè, đồng nghiệp hỗ trợ, giao tiếp tốt.' },
-                { tenCung: 'Thiên Di', luandai: 'Ra ngoài gặp may mắn, được quý nhân giúp đỡ.' },
-                { tenCung: 'Tật Ách', luandai: 'Sức khỏe nhìn chung ổn định, cần chú ý vận động.' },
-                { tenCung: 'Tài Bạch', luandai: 'Thu nhập ổn định, dễ tích lũy tài sản.' },
-                { tenCung: 'Tử Tức', luandai: 'Con cái hiếu thảo, ngoan ngoãn, thành đạt.' },
-                { tenCung: 'Phu Thê', luandai: 'Tình duyên thuận lợi, vợ chồng hòa hợp.' },
-                { tenCung: 'Huynh Đệ', luandai: 'Anh chị em đoàn kết, hỗ trợ nhau trong cuộc sống.' }
-            ],
-            advice: "Giữ vững tinh thần lạc quan, phát huy các mối quan hệ và luôn học hỏi để gặt hái thành công lâu dài."
-        });
-
-       
     </script>
+    <script type="module"src="luanchung.js"></script>
+    <script type="module"src="luancungmenh.js"></script>
+    <script type="module"src="advices.js"></script>
+    <script type="module" src="luangiai.js"></script>
 </body>
 </html>
