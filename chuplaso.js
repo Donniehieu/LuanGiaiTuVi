@@ -20,7 +20,7 @@ function chupVaShowBanLaSo() {
 
             // Lưu dataURL vào localStorage, cùng các dữ liệu khác
             // Giả sử bạn đã có object lasoData chứa các trường general, cung, advice
-            lasoData.anhBanLaSo = dataURL;
+            
             localStorage.setItem('anhBanLaSo', dataURL); // PHẢI có dòng này
         });
     }, 200); // Chờ 200ms để DOM vẽ xong
