@@ -1,7 +1,7 @@
 ﻿let cucSo = 0;
 let IDTieuHan = 0;
 let cungCu = "";
-
+// hàm thực hiện khi nhập dữ liệu các trường
 document.getElementById('form_tuvi').addEventListener('input', function () {
     const hoten = document.getElementById('hoten').value.trim();
     const ngay = document.getElementById('ngay').value;
@@ -250,6 +250,7 @@ document.getElementById('form_tuvi').addEventListener('submit', function (e) {
                                                                                                     `;
     document.getElementById('form-row').classList.add('d-none');
     document.getElementById('laso-row').classList.remove('d-none');
+
     setTimeout(function () {
         drawTamHopByMenhIdx(IDCungMenh);
         chupVaShowBanLaSo();

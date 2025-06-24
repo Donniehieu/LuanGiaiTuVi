@@ -244,6 +244,37 @@
     width: 80px;
 }
 
+.btn-xem-luan-giai {
+    display: block;
+    margin: 30px auto 0 auto;
+    padding: 0;
+    background: none;
+    border: none;
+    outline: none;
+}
 
+    .btn-xem-luan-giai > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+        color: #187769;
+        font-size: 1.13em;
+        font-weight: 600;
+        padding: 13px 32px;
+        border-radius: 28px;
+        box-shadow: 0 2px 12px rgba(56,249,215,0.09);
+        border: 1.5px solid #b2f7ef;
+        cursor: pointer;
+        transition: background 0.22s, color 0.18s, box-shadow 0.18s;
+        letter-spacing: 0.5px;
+    }
+
+        .btn-xem-luan-giai > span:hover,
+        .btn-xem-luan-giai > span:focus {
+            background: linear-gradient(90deg,#38f9d7 0%,#43e97b 100%);
+            color: #106055;
+            box-shadow: 0 4px 24px rgba(56,249,215,0.14);
+        }
 
 

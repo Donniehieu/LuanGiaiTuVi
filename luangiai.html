@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Luận Giải Lá Số Tử Vi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Quicksand', Arial, sans-serif;
+            background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 38px auto;
+            background: #fafdff;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(98,168,230,0.13);
+            padding: 40px 28px 32px 28px;
+            border: 1.5px solid #e4f1fb;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid #b9e0fc;
+            padding-bottom: 18px;
+            background: linear-gradient(90deg, #e0eafc 70%, #f8fdff 100%);
+            border-radius: 12px 12px 0 0;
+        }
+
+            .header .icon {
+                font-size: 2.3rem;
+                color: #00b894;
+                background: #e4fceb;
+                border-radius: 50%;
+                padding: 13px 16px;
+                box-shadow: 0 2px 10px rgba(0,184,148,0.08);
+            }
+
+            .header h1 {
+                margin: 0;
+                color: #3b82f6;
+                font-weight: 700;
+                font-size: 2.1rem;
+                letter-spacing: 1px;
+            }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, #a8edea 0%, #fed6e3 100%);
+            color: #21897e;
+            font-size: 1.02em;
+            font-weight: 600;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(98,168,230,0.07);
+            margin-top: 18px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            text-decoration: none;
+            outline: none;
+        }
+
+            .back-btn:hover, .back-btn:focus {
+                background: linear-gradient(90deg, #fed6e3 0%, #a8edea 100%);
+                color: #00b894;
+            }
+
+        .svg-holder {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+            .svg-holder img, .svg-holder svg {
+                width: 400px;
+                max-width: 100%;
+                border-radius: 12px;
+                background: #f2fcfb;
+                padding: 8px;
+                border: 1.5px solid #bce3dd;
+                box-shadow: 0 2px 10px rgba(0,184,148,0.07);
+            }
+
+        .section {
+            margin-bottom: 30px;
+            background: #f3f8fd;
+            border-radius: 12px;
+            padding: 22px 20px;
+            box-shadow: 0 1px 4px rgba(98,168,230,0.06);
+            border-left: 6px solid #00b894;
+            transition: background 0.3s;
+        }
+
+            .section h2, .section h3 {
+                color: #00b894;
+                margin-top: 0;
+                margin-bottom: 12px;
+            }
+
+        .cung-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+        }
+
+        .cung-item {
+            background: #fff;
+            border-radius: 7px;
+            box-shadow: 0 1px 4px rgba(98,168,230,0.04);
+            padding: 13px 12px 12px 12px;
+            border-left: 4px solid #3b82f6;
+            margin-bottom: 0;
+        }
+
+            .cung-item b {
+                color: #3b82f6;
+                font-size: 1.08em;
+            }
+
+        .advice {
+            background: linear-gradient(90deg, #eafff7 0%, #e0f7fa 100%);
+            border-left: 10px solid #3b82f6;
+            padding: 20px 18px;
+            border-radius: 12px;
+            font-size: 1.11em;
+            color: #21897e;
+            box-shadow: 0 2px 10px rgba(98,168,230,0.06);
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 10px 2vw;
+            }
+
+            .svg-holder img, .svg-holder svg {
+                width: 98vw;
+            }
+
+            .section {
+                padding: 12px 4px;
+            }
+
+            .advice {
+                padding: 12px 4px;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="icon"><i class="fa-solid fa-leaf"></i></span>
+            <h1>Luận Giải Lá Số Tử Vi</h1>
+        </div>
+        <a class="back-btn" href="index.html">
+            <i class="fa-solid fa-arrow-left"></i> Trở về trang chủ
+        </a>
+        <div class="svg-holder" id="svg-holder">
+            <!-- SVG hoặc hình ảnh lá số sẽ được hiển thị tại đây -->
+            <em>Đang tải lá số...</em>
+        </div>
+        <div class="section" id="general">
+            <h2>Luận giải tổng quan</h2>
+            <div id="general-content">Đang tải...</div>
+        </div>
+        <div class="section" id="cung">
+            <h2>Luận giải từng cung</h2>
+            <div class="cung-list" id="cung-content">
+                Đang tải...
+            </div>
+        </div>
+        <div class="section advice" id="advice">
+            <h3><i class="fa-solid fa-lightbulb"></i> Lời khuyên tổng kết</h3>
+            <div id="advice-content">Đang tải...</div>
+        </div>
+    </div>
+    <script>
+        // Hàm này nhận dữ liệu từ JS khác để hiển thị lên giao diện
+        function setLasoData({  general, cung, advice }) {
+            const anhBanLaSo = localStorage.getItem('anhBanLaSo');
+            if (anhBanLaSo) {
+                document.getElementById('svg-holder').innerHTML =
+                    `<img src="${anhBanLaSo}" alt="Ảnh bàn lá số" style="max-width:400px;width:100%;border-radius:12px;border:1.5px solid #bce3dd;">`;
+            } else {
+                document.getElementById('svg-holder').innerHTML =
+                    "<em>Không tìm thấy ảnh bàn lá số!</em>";
+            }
+            // Luận giải tổng quan
+            document.getElementById('general-content').innerText = general || 'Chưa có dữ liệu';
+            // Luận giải từng cung
+            if (Array.isArray(cung) && cung.length > 0) {
+                document.getElementById('cung-content').innerHTML =
+                    cung.map((item, idx) =>
+                        `<div class="cung-item">
+                   <b>${item.tenCung}:</b> <br>
+                   <span>${item.luandai || ''}</span>
+                 </div>`
+                    ).join('');
+            } else {
+                document.getElementById('cung-content').innerHTML = '<em>Chưa có dữ liệu</em>';
+            }
+            // Lời khuyên
+            document.getElementById('advice-content').innerText = advice || 'Chưa có dữ liệu';
+        }
+
+        // DEMO dữ liệu mẫu với đầy đủ 13 cung
+        setLasoData({
+           
+            general: "Lá số cho thấy bạn là người hòa nhã, có chí tiến thủ, dễ thành công nếu biết tận dụng các cơ hội trong cuộc sống.",
+            cung: [
+                { tenCung: 'Mệnh', luandai: 'Đây là cung chủ đạo, thể hiện tính cách mạnh mẽ, nghị lực cao.' },
+                { tenCung: 'Thân', luandai: 'Có khả năng thích nghi tốt, linh hoạt trong nhiều hoàn cảnh.' },
+                { tenCung: 'Phụ Mẫu', luandai: 'Nhận được sự yêu thương, hỗ trợ từ cha mẹ.' },
+                { tenCung: 'Phúc Đức', luandai: 'Gia đình có truyền thống tốt, hậu thuẫn mạnh mẽ.' },
+                { tenCung: 'Điền Trạch', luandai: 'Có thể sở hữu nhà cửa, đất đai vững chắc.' },
+                { tenCung: 'Quan Lộc', luandai: 'Đường công danh thuận lợi, dễ thăng tiến.' },
+                { tenCung: 'Nô Bộc', luandai: 'Có bạn bè, đồng nghiệp hỗ trợ, giao tiếp tốt.' },
+                { tenCung: 'Thiên Di', luandai: 'Ra ngoài gặp may mắn, được quý nhân giúp đỡ.' },
+                { tenCung: 'Tật Ách', luandai: 'Sức khỏe nhìn chung ổn định, cần chú ý vận động.' },
+                { tenCung: 'Tài Bạch', luandai: 'Thu nhập ổn định, dễ tích lũy tài sản.' },
+                { tenCung: 'Tử Tức', luandai: 'Con cái hiếu thảo, ngoan ngoãn, thành đạt.' },
+                { tenCung: 'Phu Thê', luandai: 'Tình duyên thuận lợi, vợ chồng hòa hợp.' },
+                { tenCung: 'Huynh Đệ', luandai: 'Anh chị em đoàn kết, hỗ trợ nhau trong cuộc sống.' }
+            ],
+            advice: "Giữ vững tinh thần lạc quan, phát huy các mối quan hệ và luôn học hỏi để gặt hái thành công lâu dài."
+        });
+
+       
+    </script>
+</body>
+</html>
